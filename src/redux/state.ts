@@ -1,10 +1,7 @@
 const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT"
-
-
-
-
-
+const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
+const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
+const SEND_MESSAGE = "SEND-MESSAGE";
 
 export type DialogDataType = {
   id: number;
@@ -30,6 +27,7 @@ export type StateType = {
   dialogsPage: {
     dialogs: Array<DialogDataType>;
     messages: Array<MessagesDataType>;
+    newMessageText: string;
   };
 };
 
@@ -69,6 +67,7 @@ export let store: StoreType = {
         { id: 4, message: "Yo" },
         { id: 5, message: "Yo" },
       ],
+      newMessageText: "",
     },
   },
   _callSubscriber() {
@@ -95,10 +94,20 @@ export let store: StoreType = {
     } else if (action.type === UPDATE_NEW_POST_TEXT) {
       this._state.profilePage.newPostText = action.newText;
       this._callSubscriber(this.getState());
+    } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
+      this._state.dialogsPage.newMessageText = action.newMessageText;
+      this._callSubscriber(this.getState());
+    } else if (action.type === SEND_MESSAGE) {
+      let message = {
+        id: 6,
+        message: this._state.dialogsPage.newMessageText,
+      };
+      this._state.dialogsPage.messages.push(message);
+      this._state.dialogsPage.newMessageText = "";
+      this._callSubscriber(this.getState());
     }
   },
 };
-
 
 export const addPostAC = () => {
   return {
@@ -106,9 +115,22 @@ export const addPostAC = () => {
   };
 };
 
-export const updateNewPostTextAC = (value: string) => {
+export const updateNewPostTextAC = (newText: string) => {
   return {
     type: UPDATE_NEW_POST_TEXT,
-    newText: value,
+    newText,
+  };
+};
+
+export const updateNewMessageTextAC = (newMessageText: string) => {
+  return {
+    type: UPDATE_NEW_MESSAGE_TEXT,
+    newMessageText,
+  };
+};
+
+export const sendMessageAC = () => {
+  return {
+    type: SEND_MESSAGE,
   };
 };

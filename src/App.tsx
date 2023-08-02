@@ -8,7 +8,7 @@ import { StateType } from "./redux/state";
 
 export type AppPropsType = {
   state: StateType;
-  dispatch: (action: any, newText?: string) => void;
+  dispatch: (action: any) => void;
 };
 
 export const App = (props: AppPropsType) => {
@@ -33,6 +33,8 @@ export const App = (props: AppPropsType) => {
             <Dialogs
               messages={props.state.dialogsPage.messages}
               dialogs={props.state.dialogsPage.dialogs}
+              newMessageText={props.state.dialogsPage.newMessageText}
+              dispatch={props.dispatch}
             />
           )}
         />
