@@ -1,4 +1,4 @@
-import { PostDataType } from "../../redux/state";
+import { PostDataType } from "../../redux/store";
 import { MyPost } from "./MyPost/MyPost";
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
 

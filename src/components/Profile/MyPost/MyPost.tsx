@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import {
   PostDataType,
-} from "../../../redux/state";
+} from "../../../redux/store";
 import s from "./MyPost.module.css";
 import { Post } from "./Post/Post";
 import { addPostAC, updateNewPostTextAC } from "../../../redux/profile-reducer";
@@ -19,6 +19,7 @@ export const MyPost = (props: MyPostPropsType) => {
   const updateNewPostText = (e: ChangeEvent<HTMLTextAreaElement>) => {
     props.dispatch(updateNewPostTextAC(e.currentTarget.value));
   };
+  // debugger;
 
   return (
     <div className={s.postBlock}>
