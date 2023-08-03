@@ -1,11 +1,10 @@
 import { ChangeEvent } from "react";
 import {
   PostDataType,
-  addPostAC,
-  updateNewPostTextAC,
 } from "../../../redux/state";
 import s from "./MyPost.module.css";
 import { Post } from "./Post/Post";
+import { addPostAC, updateNewPostTextAC } from "../../../redux/profile-reducer";
 
 export type MyPostPropsType = {
   posts: Array<PostDataType>;
