@@ -26,9 +26,6 @@ export const profileReducer = (
         message: state.newPostText,
         likesCount: 0,
       };
-
-      // state.posts.push(newPost);
-      // state.newPostText = "";
       return { ...state, posts: [...state.posts, newPost], newPostText: "" };
     case UPDATE_NEW_POST_TEXT:
       if (action.newText) {

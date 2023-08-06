@@ -33,11 +33,9 @@ export const dialogsReducer = (
           ...state,
           newMessageText: action.newMessageText,
         };
-        // state.newMessageText = action.newMessageText;
       } else {
         return state;
       }
-
     case SEND_MESSAGE:
       let message = {
         id: 6,
@@ -48,9 +46,6 @@ export const dialogsReducer = (
         messages: [...state.messages, message],
         newMessageText: "",
       };
-    // state.messages.push(message);
-    // state.newMessageText = "";
-    // return state;
     default:
       return state;
   }
