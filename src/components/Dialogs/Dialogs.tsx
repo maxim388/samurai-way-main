@@ -2,14 +2,14 @@ import s from "./Dialogs.module.css";
 import { Mesassage } from "./Message/Message";
 import { DialogItem } from "./DialogItem/DialogItem";
 import { ChangeEvent } from "react";
-import { DialogDataType, MessagesDataType} from "../../redux/store";
-import { sendMessageAC, updateNewMessageTextAC } from "../../redux/dialogs-reducer";
+import { DialogDataType, MessagesDataType } from "../../redux/redux-store";
 
 export type DialogsPropsType = {
   messages: Array<MessagesDataType>;
   dialogs: Array<DialogDataType>;
   newMessageText: string;
-  dispatch: (action: any) => void;
+  onSendMesageClick: () => void;
+  onNewMessageChange: (massege: string) => void;
 };
 
 export const Dialogs = (props: DialogsPropsType) => {
@@ -21,12 +21,12 @@ export const Dialogs = (props: DialogsPropsType) => {
   });
 
   const onSendMesageClick = () => {
-    
-    props.dispatch(sendMessageAC());
-  }
+    props.onSendMesageClick();
+  };
 
   const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    props.dispatch(updateNewMessageTextAC(e.currentTarget.value));
+    let message = e.currentTarget.value;
+    props.onNewMessageChange(message);
   };
 
   return (

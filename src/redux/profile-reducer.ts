@@ -1,4 +1,6 @@
-import { PostDataType } from "./store";
+// import { PostDataType } from "./store";
+
+import { PostDataType, ProfilePageType } from "./redux-store";
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
@@ -13,8 +15,10 @@ let initialState = {
   newPostText: "",
 };
 
-
-export const profileReducer = (state: any = initialState, action: any) => {
+export const profileReducer = (
+  state: ProfilePageType = initialState,
+  action: ActionTypes
+) => {
   // debugger;
   switch (action.type) {
     case ADD_POST:
@@ -27,22 +31,28 @@ export const profileReducer = (state: any = initialState, action: any) => {
       state.newPostText = "";
       return state;
     case UPDATE_NEW_POST_TEXT:
-      state.newPostText = action.newText;
+      if (action.newText) {
+        state.newPostText = action.newText;
+      }
       return state;
     default:
       return state;
   }
 };
 
+type ActionTypes =
+  | ReturnType<typeof addPostAC>
+  | ReturnType<typeof updateNewPostTextAC>;
+
 export const addPostAC = () => {
   return {
     type: ADD_POST,
-  };
+  } as const;
 };
 
 export const updateNewPostTextAC = (newText: string) => {
   return {
     type: UPDATE_NEW_POST_TEXT,
     newText,
-  };
+  } as const;
 };

@@ -1,3 +1,5 @@
+import { DialogsPageType } from "./redux-store";
+
 const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
 const SEND_MESSAGE = "SEND-MESSAGE";
 
@@ -20,11 +22,15 @@ let initialState = {
   newMessageText: "",
 };
 
-export const dialogsReducer = (state: any = initialState, action: any) => {
-  // debugger;
+export const dialogsReducer = (
+  state: DialogsPageType = initialState,
+  action: ActionTypes
+) => {
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_TEXT:
-      state.newMessageText = action.newMessageText;
+      if (action.newMessageText) {
+        state.newMessageText = action.newMessageText;
+      }
       return state;
     case SEND_MESSAGE:
       let message = {
@@ -38,16 +44,19 @@ export const dialogsReducer = (state: any = initialState, action: any) => {
       return state;
   }
 };
+type ActionTypes =
+  | ReturnType<typeof updateNewMessageTextAC>
+  | ReturnType<typeof sendMessageAC>;
 
 export const updateNewMessageTextAC = (newMessageText: string) => {
   return {
     type: UPDATE_NEW_MESSAGE_TEXT,
     newMessageText,
-  };
+  } as const;
 };
 
 export const sendMessageAC = () => {
   return {
     type: SEND_MESSAGE,
-  };
+  } as const;
 };

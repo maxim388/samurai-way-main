@@ -1,23 +1,23 @@
 import { dialogsReducer } from "./dialogs-reducer";
 import { profileReducer } from "./profile-reducer";
 
-export type DialogDataType = {
+type DialogDataType = {
   id: number;
   name: string;
 };
 
-export type MessagesDataType = {
+type MessagesDataType = {
   id: number;
   message: string;
 };
 
-export type PostDataType = {
+type PostDataType = {
   id: number;
   message: string;
   likesCount: number;
 };
 
-export type StateType = {
+type StateType = {
   profilePage: {
     posts: Array<PostDataType>;
     newPostText: string;
@@ -29,7 +29,7 @@ export type StateType = {
   };
 };
 
-export type StoreType = {
+type StoreType = {
   _state: StateType;
   getState: () => StateType;
   _callSubscriber: (state: StateType) => void;
