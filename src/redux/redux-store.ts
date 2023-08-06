@@ -29,11 +29,6 @@ export type DialogsPageType = {
   newMessageText: string;
 };
 
-export type StateType = {
-  profilePage: ProfilePageType;
-  dialogsPage: DialogsPageType;
-};
-
 const reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
@@ -42,6 +37,6 @@ const reducers = combineReducers({
 export const store = createStore(reducers);
 
 export type StoreType = typeof store;
-export type RootStateType = ReturnType<typeof reducers>
+export type StateType = ReturnType<typeof reducers>;
 // @ts-ignore
-window.store = store
+window.store = store;

@@ -1,3 +1,4 @@
+import { StoreContext } from "../../StoreContext";
 import {
   sendMessageAC,
   updateNewMessageTextAC,
@@ -6,27 +7,33 @@ import { StoreType } from "../../redux/redux-store";
 import { Dialogs } from "./Dialogs";
 
 export type DialogsContainerPropsType = {
-  store: StoreType;
+  // store: StoreType;
 };
 
 export const DialogsContainer = (props: DialogsContainerPropsType) => {
-  const state = props.store.getState();
-
-  const onSendMesageClick = () => {
-    props.store.dispatch(sendMessageAC());
-  };
-
-  const onNewMessageChange = (message: string) => {
-    props.store.dispatch(updateNewMessageTextAC(message));
-  };
-
   return (
-    <Dialogs
-      dialogs={state.dialogsPage.dialogs}
-      messages={state.dialogsPage.messages}
-      newMessageText={state.dialogsPage.newMessageText}
-      onSendMesageClick={onSendMesageClick}
-      onNewMessageChange={onNewMessageChange}
-    />
+    <StoreContext.Consumer>
+      {(store) => {
+        const state = store.getState();
+        
+        const onSendMesageClick = () => {
+          store.dispatch(sendMessageAC());
+        };
+
+        const onNewMessageChange = (message: string) => {
+          store.dispatch(updateNewMessageTextAC(message));
+        };
+
+        return (
+          <Dialogs
+            dialogs={state.dialogsPage.dialogs}
+            messages={state.dialogsPage.messages}
+            newMessageText={state.dialogsPage.newMessageText}
+            onSendMesageClick={onSendMesageClick}
+            onNewMessageChange={onNewMessageChange}
+          />
+        );
+      }}
+    </StoreContext.Consumer>
   );
 };
