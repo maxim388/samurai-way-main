@@ -8,7 +8,6 @@ import { StateType, StoreType } from "../../redux/redux-store";
 import { Dialogs } from "./Dialogs";
 import { Dispatch } from "redux";
 
-
 export type DialogsContainerPropsType = {
   // store: StoreType;
 };
@@ -59,4 +58,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+export const DialogsContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dialogs);

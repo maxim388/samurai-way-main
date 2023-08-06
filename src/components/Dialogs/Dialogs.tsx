@@ -28,7 +28,6 @@ export const Dialogs = (props: DialogsPropsType) => {
     let message = e.currentTarget.value;
     props.onNewMessageChange(message);
   };
-  debugger;
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{gialogsElements}</div>

@@ -29,17 +29,28 @@ export const dialogsReducer = (
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_TEXT:
       if (action.newMessageText) {
-        state.newMessageText = action.newMessageText;
+        return {
+          ...state,
+          newMessageText: action.newMessageText,
+        };
+        // state.newMessageText = action.newMessageText;
+      } else {
+        return state;
       }
-      return state;
+
     case SEND_MESSAGE:
       let message = {
         id: 6,
         message: state.newMessageText,
       };
-      state.messages.push(message);
-      state.newMessageText = "";
-      return state;
+      return {
+        ...state,
+        messages: [...state.messages, message],
+        newMessageText: "",
+      };
+    // state.messages.push(message);
+    // state.newMessageText = "";
+    // return state;
     default:
       return state;
   }
