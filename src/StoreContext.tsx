@@ -3,13 +3,13 @@ import { StoreType, store } from "./redux/redux-store";
 
 type Provider = {
   store: StoreType;
-//   children: () => void;
+  children: () => void;
 };
 
 export const Provider = (props: Provider) => {
   return (
     <StoreContext.Provider value={props.store}>
-      {/* {props.children} */}
+      {props.children}
     </StoreContext.Provider>
   );
 };
