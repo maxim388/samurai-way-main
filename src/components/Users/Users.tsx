@@ -1,5 +1,7 @@
+import axios from "axios";
 import { UserType } from "../../redux/users-reducer";
 import s from "./Users.module.css";
+import UserPhoto from "../../assets/users_default_img.jpg"
 
 export type UsersPropsType = {
   users: Array<UserType>;
@@ -10,44 +12,15 @@ export type UsersPropsType = {
 
 export const Users = (props: UsersPropsType) => {
   if (!props.users.length) {
-    props.setUsers([
-      {
-        id: 1,
-        photoUrl:
-          "https://n1s2.hsmedia.ru/1c/2d/db/1c2ddba2542202e3d5110fe28d026247/480x497_0xac120003_12278425171554311041.jpg",
-        followed: false,
-        fullName: "Dmitry",
-        status: "I'm a boss",
-        location: { city: "Minsk", country: "Belarus" },
-      },
-      {
-        id: 2,
-        photoUrl:
-          "https://n1s2.hsmedia.ru/1c/2d/db/1c2ddba2542202e3d5110fe28d026247/480x497_0xac120003_12278425171554311041.jpg",
-        followed: true,
-        fullName: "Maxim",
-        status: "I'm a boss)",
-        location: { city: "Moskow", country: "Russia" },
-      },
-      {
-        id: 3,
-        photoUrl:
-          "https://n1s2.hsmedia.ru/1c/2d/db/1c2ddba2542202e3d5110fe28d026247/480x497_0xac120003_12278425171554311041.jpg",
-        followed: false,
-        fullName: "Ilya",
-        status: "I'm a boss too",
-        location: { city: "Kiev", country: "Ukrain" },
-      },
-      {
-        id: 4,
-        photoUrl:
-          "https://n1s2.hsmedia.ru/1c/2d/db/1c2ddba2542202e3d5110fe28d026247/480x497_0xac120003_12278425171554311041.jpg",
-        followed: true,
-        fullName: "Olga",
-        status: "I'm a big boss",
-        location: { city: "Minsk", country: "Belarus" },
-      },
-    ]);
+    axios
+      .get("https://social-network.samuraijs.com/api/1.0/users")
+      .then((response) => {
+        props.setUsers(
+          response.data.items
+          
+        );
+      });
+
     return <div>Loading</div>;
   } else {
     return (
@@ -57,7 +30,11 @@ export const Users = (props: UsersPropsType) => {
             <div key={u.id}>
               <span>
                 <div>
-                  <img alt="" src={u.photoUrl} className={s.ava} />
+                  <img
+                    alt=""
+                    src={u.photos.small !== null ? u.photos.small : UserPhoto}
+                    className={s.ava}
+                  />
                 </div>
                 <div>
                   {u.followed ? (
@@ -81,12 +58,12 @@ export const Users = (props: UsersPropsType) => {
               </span>
               <span>
                 <span>
-                  <div>{u.fullName}</div>
+                  <div>{u.name}</div>
                   <div>{u.status}</div>
                 </span>
                 <span>
-                  <div>{u.location.city}</div>
-                  <div>{u.location.country}</div>
+                  <div>{"u.location.city"}</div>
+                  <div>{"u.location.country"}</div>
                 </span>
               </span>
             </div>

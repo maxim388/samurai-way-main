@@ -8,12 +8,12 @@ export type LocationUserType = {
 };
 
 export type UserType = {
-  id: number;
-  photoUrl: string;
   followed: boolean;
-  fullName: string;
-  status: string;
-  location: LocationUserType;
+  id: number;
+  name: string;
+  photos: { small: any; large: any };
+  status: any;
+  uniqueUrlName: null;
 };
 
 export type UsersPageType = {
@@ -30,36 +30,25 @@ export const usersReducer = (
 ): UsersPageType => {
   switch (action.type) {
     case FOLLOW:
-      if (state.users === null) {
-        return state;
-      } else {
-        return {
-          ...state,
-          users: state.users.map((u) =>
-            u.id === action.userId ? { ...u, followed: true } : u
-          ),
-        };
-      }
+      return {
+        ...state,
+        users: state.users.map((u) =>
+          u.id === action.userId ? { ...u, followed: true } : u
+        ),
+      };
     case UNFOLLOW:
-      if (state.users === null) {
-        return state;
-      } else {
-        return {
-          ...state,
-          users: state.users.map((u) =>
-            u.id === action.userId ? { ...u, followed: false } : u
-          ),
-        };
-      }
+      return {
+        ...state,
+        users: state.users.map((u) =>
+          u.id === action.userId ? { ...u, followed: false } : u
+        ),
+      };
     case SET_USERS:
-      if (state.users === null) {
-        return state;
-      } else {
-        return {
-          ...state,
-          users: [...state.users, ...action.users],
-        };
-      }
+      
+      return {
+        ...state,
+        users: [...state.users, ...action.users],
+      };
 
     default:
       return state;
@@ -86,6 +75,7 @@ export const unfollowAC = (userId: number) => {
 };
 
 export const setUsersAC = (users: Array<UserType>) => {
+  
   return {
     type: SET_USERS,
     users,
