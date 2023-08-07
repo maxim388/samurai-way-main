@@ -2,16 +2,15 @@ import s from "./Dialogs.module.css";
 import { Mesassage } from "./Message/Message";
 import { DialogItem } from "./DialogItem/DialogItem";
 import { ChangeEvent } from "react";
-import { DialogDataType, MessagesDataType } from "../../redux/dialogs-reducer";
+import { DialogsPropsType } from "./DialogsContainer";
 
-
-export type DialogsPropsType = {
-  messages: Array<MessagesDataType>;
-  dialogs: Array<DialogDataType>;
-  newMessageText: string;
-  onSendMesageClick: () => void;
-  onNewMessageChange: (massege: string) => void;
-};
+// export type DialogsPropsType = {
+//   dialogs: Array<DialogDataType>;
+//   messages: Array<MessagesDataType>;
+//   newMessageText: string;
+//   onSendMesageClick: () => void;
+//   onNewMessageChange: (massege: string) => void;
+// };
 
 export const Dialogs = (props: DialogsPropsType) => {
   const gialogsElements = props.dialogs.map((d) => {
