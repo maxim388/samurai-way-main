@@ -1,6 +1,8 @@
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
-const SET_USERS = "SET-USERS";
+const SET_USERS = "SET_USERS";
+const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 
 export type LocationUserType = {
   city: string;
@@ -18,10 +20,16 @@ export type UserType = {
 
 export type UsersPageType = {
   users: Array<UserType>;
+  pageSize: number;
+  totalUsersCount: number;
+  currentPage: number;
 };
 
 let initialState = {
   users: [],
+  pageSize: 5,
+  totalUsersCount: 0,
+  currentPage: 2,
 };
 
 export const usersReducer = (
@@ -46,8 +54,27 @@ export const usersReducer = (
     case SET_USERS:
       return {
         ...state,
-        users: [...state.users, ...action.users],
+        users: action.users,
       };
+    case SET_TOTAL_USERS_COUNT:
+      if (action.totalUsersCount > 100) {
+        return {
+          ...state,
+          totalUsersCount: 100,
+        };
+      } else {
+        return {
+          ...state,
+          totalUsersCount: action.totalUsersCount,
+        };
+      }
+
+    case SET_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.currentPage,
+      };
+
     default:
       return state;
   }
@@ -56,7 +83,9 @@ export const usersReducer = (
 type ActionTypes =
   | ReturnType<typeof followAC>
   | ReturnType<typeof unfollowAC>
-  | ReturnType<typeof setUsersAC>;
+  | ReturnType<typeof setUsersAC>
+  | ReturnType<typeof setTotalUsersCountAC>
+  | ReturnType<typeof setCurrentPageAC>;
 
 export const followAC = (userId: number) => {
   return {
@@ -76,5 +105,19 @@ export const setUsersAC = (users: Array<UserType>) => {
   return {
     type: SET_USERS,
     users,
+  } as const;
+};
+
+export const setTotalUsersCountAC = (totalUsersCount: number) => {
+  return {
+    type: SET_TOTAL_USERS_COUNT,
+    totalUsersCount,
+  } as const;
+};
+
+export const setCurrentPageAC = (currentPage: number) => {
+  return {
+    type: SET_CURRENT_PAGE,
+    currentPage,
   } as const;
 };
