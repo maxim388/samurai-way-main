@@ -13,19 +13,3 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById("root")
 );
-
-// const rerenderEntireTree = () => {
-//   ReactDOM.render(
-//     <BrowserRouter>
-//       <Provider store={store}>
-//         <App />
-//       </Provider>
-//     </BrowserRouter>,
-//     document.getElementById("root")
-//   );
-// };
-
-// rerenderEntireTree();
-// store.subscribe(() => {
-//   rerenderEntireTree();
-// });
