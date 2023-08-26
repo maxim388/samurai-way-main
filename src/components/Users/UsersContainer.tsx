@@ -39,29 +39,48 @@ const mapStateToProps = (state: StateType): MapStatePropsType => {
     isFetching: state.usersPage.isFetching,
   };
 };
-
-const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-  return {
-    follow: (userId: number) => {
-      dispatch(followAC(userId));
-    },
-    unfollow: (userId: number) => {
-      dispatch(unfollowAC(userId));
-    },
-    setUsers: (users: Array<UserType>) => {
-      dispatch(setUsersAC(users));
-    },
-    setCurrentPage: (currentPage: number) => {
-      dispatch(setCurrentPageAC(currentPage));
-    },
-    setTotalUsersCount: (totalCount: number) => {
-      dispatch(setTotalUsersCountAC(totalCount));
-    },
-    toggleIsFetching: (isFetching: boolean) => {
-      dispatch(toggleIsFetchingAC(isFetching));
-    },
-  };
+// connect сам оборачивает dispatch'ем каждле свойство объекта
+const mapDispatchToProps: MapDispatchToPropsType = {
+  follow: followAC,
+  unfollow: unfollowAC,
+  setUsers: setUsersAC,
+  setCurrentPage: setCurrentPageAC,
+  setTotalUsersCount: setTotalUsersCountAC,
+  toggleIsFetching: toggleIsFetchingAC,
 };
+
+//вариант как можно еще сократить mapDispatchToProps если ключ = значению
+// const mapDispatchToProps: MapDispatchToPropsType = {
+//   follow,
+//   unfollow,
+//   setUsers,
+//   setCurrentPage,
+//   setTotalUsersCount,
+//   toggleIsFetching,
+// };
+
+// const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
+//   return {
+//     follow: (userId: number) => {
+//       dispatch(followAC(userId));
+//     },
+//     unfollow: (userId: number) => {
+//       dispatch(unfollowAC(userId));
+//     },
+//     setUsers: (users: Array<UserType>) => {
+//       dispatch(setUsersAC(users));
+//     },
+//     setCurrentPage: (currentPage: number) => {
+//       dispatch(setCurrentPageAC(currentPage));
+//     },
+//     setTotalUsersCount: (totalCount: number) => {
+//       dispatch(setTotalUsersCountAC(totalCount));
+//     },
+//     toggleIsFetching: (isFetching: boolean) => {
+//       dispatch(toggleIsFetchingAC(isFetching));
+//     },
+//   };
+// };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
   componentDidMount = () => {
@@ -101,7 +120,6 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
     }
     return (
       <>
-        {" "}
         {this.props.isFetching ? (
           <Preloader />
         ) : (
