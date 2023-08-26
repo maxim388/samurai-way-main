@@ -1,12 +1,13 @@
 import s from "./Users.module.css";
 import UserPhoto from "../../assets/users_default_img.jpg";
 import React from "react";
-import { UserType } from "../../redux/users-reducer";
+import { UserType } from "../../reducers/users-reducer";
 
 type UserPropsType = {
   pages: number[];
   users: UserType[];
   currentPage: number;
+  isFetching: boolean;
   onPageChanged: (pageNumber: number) => void;
   follow: (userId: number) => void;
   unfollow: (userId: number) => void;

@@ -1,8 +1,7 @@
 import { ChangeEvent } from "react";
 import s from "./MyPost.module.css";
 import { Post } from "./Post/Post";
-import { PostDataType } from "../../../redux/profile-reducer";
-
+import { PostDataType } from "../../../reducers/profile-reducer";
 
 export type MyPostPropsType = {
   posts: Array<PostDataType>;
@@ -15,7 +14,7 @@ export const MyPost = (props: MyPostPropsType) => {
   const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     let text = e.currentTarget.value;
     props.updateNewPostText(text);
-  }
+  };
   return (
     <div className={s.postBlock}>
       <h3>My Post</h3>

@@ -1,14 +1,14 @@
 import { createStore, combineReducers } from "redux";
-import { profileReducer } from "./profile-reducer";
-import { dialogsReducer } from "./dialogs-reducer";
-import { usersReducer } from "./users-reducer";
+import { profileReducer } from "../reducers/profile-reducer";
+import { dialogsReducer } from "../reducers/dialogs-reducer";
+import { usersReducer } from "../reducers/users-reducer";
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   usersPage: usersReducer,
 });
- 
+
 export const store = createStore(rootReducer);
 
 export type StoreType = typeof store;

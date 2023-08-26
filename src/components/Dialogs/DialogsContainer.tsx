@@ -4,7 +4,7 @@ import {
   MessagesDataType,
   sendMessageAC,
   updateNewMessageTextAC,
-} from "../../redux/dialogs-reducer";
+} from "../../reducers/dialogs-reducer";
 import { StateType } from "../../redux/redux-store";
 import { Dialogs } from "./Dialogs";
 import { Dispatch } from "redux";
