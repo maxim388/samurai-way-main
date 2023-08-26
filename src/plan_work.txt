@@ -1,0 +1,6 @@
+//test for auth-reducer
+//test case SET_USER_PROFILE
+//added useMemo
+//added useCallback
+//added React.memo
+

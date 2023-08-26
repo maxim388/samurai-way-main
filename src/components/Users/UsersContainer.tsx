@@ -26,7 +26,7 @@ type MapDispatchToPropsType = {
   toggleIsFetching: (isFetching: boolean) => void;
 };
 
-export type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
+type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
 const mapStateToProps = (state: StateType): MapStateToPropsType => {
   return {
