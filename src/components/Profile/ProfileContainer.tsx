@@ -6,32 +6,41 @@ import {
   UserProfileType,
   setUserProfileAC,
 } from "../../reducers/profile-reducer";
-import { toggleIsFetchingAC } from "../../reducers/users-reducer";
 import { StateType } from "../../redux/redux-store";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { StaticContext } from "react-router";
 
 type ProfilePropsType = MapStateToPropsType & MapDispatchToPropsType;
 
 type MapStateToPropsType = {
   profile: null | UserProfileType;
+  // params?: {}
 };
 
 type MapDispatchToPropsType = {
   setUserProfile: (profile: UserProfileType) => void;
-  // toggleIsFetching: (isFetching: boolean) => void;
 };
 
-export class ProfileAPIContainer extends React.Component<ProfilePropsType> {
+export class ProfileAPIContainer extends React.Component<
+  ProfilePropsType & RouteComponentProps<any, StaticContext, unknown>
+> {
   componentDidMount() {
-    // this.props.toggleIsFetching(true);
+
+    let userId;
+    if (this.props.match.params.hasOwnProperty("userId")) {
+      userId = this.props.match.params.userId;
+    } else {
+      userId = "2";
+    }
+    
     axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/2`)
+      .get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
       .then((response) => {
-        // this.props.toggleIsFetching(false);
         this.props.setUserProfile(response.data);
       });
   }
   render() {
-    return <Profile {...this.props} />;
+    return <Profile profile={this.props.profile} />;
   }
 }
 
@@ -43,10 +52,11 @@ const mapStateToProps = (state: StateType): MapStateToPropsType => {
 
 const mapDispatchToProps: MapDispatchToPropsType = {
   setUserProfile: setUserProfileAC,
-  // toggleIsFetching: toggleIsFetchingAC,
 };
+
+const withUrlDataContainerComponent = withRouter(ProfileAPIContainer);
 
 export const ProfileContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProfileAPIContainer);
+)(withUrlDataContainerComponent);

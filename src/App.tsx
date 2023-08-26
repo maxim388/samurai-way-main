@@ -1,7 +1,6 @@
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Header } from "./components/Header/Header";
-import { Profile } from "./components/Profile/Profile";
 import { Route } from "react-router-dom";
 import { DialogsContainer } from "./components/Dialogs/DialogsContainer";
 import { UsersContainer } from "./components/Users/UsersContainer";
@@ -13,7 +12,7 @@ export const App = () => {
       <Header />
       <Navbar />
       <div className={"app-wrapper-content"}>
-        <Route path={"/profile"} render={() => <ProfileContainer />} />
+        <Route path={"/profile/:userId?"} render={() => <ProfileContainer />} />
         <Route path={"/dialogs"} render={() => <DialogsContainer />} />
         <Route path={"/users"} render={() => <UsersContainer />} />
       </div>
