@@ -3,6 +3,7 @@ import UserPhoto from "../../assets/users_default_img.jpg";
 import React from "react";
 import { UserType } from "../../reducers/users-reducer";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 type UserPropsType = {
   pages: number[];
@@ -53,7 +54,22 @@ export const Users: React.FC<UserPropsType> = ({
                 {u.followed ? (
                   <button
                     onClick={() => {
-                      unfollow(u.id);
+                      axios
+                        .delete(
+                          `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
+                          {
+                            headers: {
+                              "API-KEY": "41b0e7ee-a396-4123-8fc6-d9277f02bce7",
+                            },
+                            withCredentials: true,
+                          }
+                        )
+
+                        .then((response) => {
+                          if (!response.data.resultCode) {
+                            unfollow(u.id);
+                          }
+                        });
                     }}
                   >
                     Follow
@@ -61,7 +77,22 @@ export const Users: React.FC<UserPropsType> = ({
                 ) : (
                   <button
                     onClick={() => {
-                      follow(u.id);
+                      axios
+                        .post(
+                          `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
+                          {},
+                          {
+                            headers: {
+                              "API-KEY": "41b0e7ee-a396-4123-8fc6-d9277f02bce7",
+                            },
+                            withCredentials: true,
+                          }
+                        )
+                        .then((response) => {
+                          if (!response.data.resultCode) {
+                            follow(u.id);
+                          }
+                        });
                     }}
                   >
                     Unfollow
