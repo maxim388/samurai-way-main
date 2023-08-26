@@ -2,6 +2,7 @@ import s from "./Users.module.css";
 import UserPhoto from "../../assets/users_default_img.jpg";
 import React from "react";
 import { UserType } from "../../reducers/users-reducer";
+import { NavLink } from "react-router-dom";
 
 type UserPropsType = {
   pages: number[];
@@ -35,17 +36,18 @@ export const Users: React.FC<UserPropsType> = ({
           );
         })}
       </div>
-      {/* <button onClick={this.getUsers}>getUsers</button> */}
       {users.map((u) => {
         return (
           <div key={u.id}>
             <span>
               <div>
-                <img
-                  alt=""
-                  src={u.photos.small !== null ? u.photos.small : UserPhoto}
-                  className={s.ava}
-                />
+                <NavLink to={`/profile/${u.id}`}>
+                  <img
+                    alt="ava"
+                    src={u.photos.small !== null ? u.photos.small : UserPhoto}
+                    className={s.ava}
+                  />
+                </NavLink>
               </div>
               <div>
                 {u.followed ? (

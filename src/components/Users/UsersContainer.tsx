@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { StateType } from "../../redux/redux-store";
 import {
   UserType,
@@ -16,7 +15,7 @@ import React from "react";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader";
 
-type MapStatePropsType = UsersPageType;
+type MapStateToPropsType = UsersPageType;
 
 type MapDispatchToPropsType = {
   follow: (userId: number) => void;
@@ -27,10 +26,9 @@ type MapDispatchToPropsType = {
   toggleIsFetching: (isFetching: boolean) => void;
 };
 
-export type UsersContainerPropsType = MapStatePropsType &
-  MapDispatchToPropsType;
+export type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStatePropsType => {
+const mapStateToProps = (state: StateType): MapStateToPropsType => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
@@ -48,39 +46,6 @@ const mapDispatchToProps: MapDispatchToPropsType = {
   setTotalUsersCount: setTotalUsersCountAC,
   toggleIsFetching: toggleIsFetchingAC,
 };
-
-//вариант как можно еще сократить mapDispatchToProps если ключ = значению
-// const mapDispatchToProps: MapDispatchToPropsType = {
-//   follow,
-//   unfollow,
-//   setUsers,
-//   setCurrentPage,
-//   setTotalUsersCount,
-//   toggleIsFetching,
-// };
-
-// const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-//   return {
-//     follow: (userId: number) => {
-//       dispatch(followAC(userId));
-//     },
-//     unfollow: (userId: number) => {
-//       dispatch(unfollowAC(userId));
-//     },
-//     setUsers: (users: Array<UserType>) => {
-//       dispatch(setUsersAC(users));
-//     },
-//     setCurrentPage: (currentPage: number) => {
-//       dispatch(setCurrentPageAC(currentPage));
-//     },
-//     setTotalUsersCount: (totalCount: number) => {
-//       dispatch(setTotalUsersCountAC(totalCount));
-//     },
-//     toggleIsFetching: (isFetching: boolean) => {
-//       dispatch(toggleIsFetchingAC(isFetching));
-//     },
-//   };
-// };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
   componentDidMount = () => {

@@ -1,5 +1,6 @@
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
+const SET_USER_PROFILE = "SET_USER_PROFILE";
 
 export type PostDataType = {
   id: number;
@@ -7,9 +8,32 @@ export type PostDataType = {
   likesCount: number;
 };
 
+export type UserProfileType = {
+  aboutMe: string;
+  contacts: {
+    facebook: string;
+    website: null;
+    vk: string;
+    twitter: string;
+    instagram: string;
+    youtube: null;
+    github: string;
+    mainLink: null;
+  };
+  lookingForAJob: true;
+  lookingForAJobDescription: string;
+  fullName: string;
+  userId: number;
+  photos: {
+    small: string;
+    large: string;
+  };
+};
+
 export type ProfilePageType = {
   posts: Array<PostDataType>;
   newPostText: string;
+  profile: null | UserProfileType;
 };
 
 let initialState = {
@@ -20,6 +44,7 @@ let initialState = {
     { id: 4, message: "Dada", likesCount: 11 },
   ],
   newPostText: "",
+  profile: null,
 };
 
 export const profileReducer = (
@@ -43,6 +68,8 @@ export const profileReducer = (
       } else {
         return state;
       }
+    case SET_USER_PROFILE:
+      return { ...state, profile: action.profile };
     default:
       return state;
   }
@@ -50,7 +77,8 @@ export const profileReducer = (
 
 type ActionTypes =
   | ReturnType<typeof addPostAC>
-  | ReturnType<typeof updateNewPostTextAC>;
+  | ReturnType<typeof updateNewPostTextAC>
+  | ReturnType<typeof setUserProfileAC>;
 
 export const addPostAC = () => {
   return {
@@ -62,5 +90,12 @@ export const updateNewPostTextAC = (newText: string) => {
   return {
     type: UPDATE_NEW_POST_TEXT,
     newText,
+  } as const;
+};
+
+export const setUserProfileAC = (profile: UserProfileType) => {
+  return {
+    type: SET_USER_PROFILE,
+    profile,
   } as const;
 };

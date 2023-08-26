@@ -1,13 +1,16 @@
+import { UserProfileType } from "../../reducers/profile-reducer";
 import { MyPostContainer } from "./MyPost/MyPostContainer";
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
 
-export type ProfilePropsType = {};
+type ProfilePropsType = {
+  profile: null | UserProfileType;
+};
 
-export const Profile = (props: ProfilePropsType) => {
+export const Profile: React.FC<ProfilePropsType> = ({ profile }) => {
   return (
     <div>
-      <ProfileInfo />
+      <ProfileInfo profile={profile} />
       <MyPostContainer />
     </div>
-  ); 
+  );
 };
