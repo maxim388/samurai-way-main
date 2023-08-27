@@ -58,7 +58,7 @@ export const Users: React.FC<UserPropsType> = ({
                       unfollowTC(u.id);
                     }}
                   >
-                    Follow
+                    Unfollow
                   </button>
                 ) : (
                   <button
@@ -67,7 +67,7 @@ export const Users: React.FC<UserPropsType> = ({
                       followTC(u.id);
                     }}
                   >
-                    Unfollow
+                    Follow
                   </button>
                 )}
               </div>

@@ -61,9 +61,3 @@ export const ProfileContainer = compose<React.ComponentType>(
   connect(mapStateToProps, mapDispatchToProps),
   withRouter
 )(ProfileAPIContainer);
-
-// const withUrlDataContainerComponent = withRouter(ProfileAPIContainer);
-
-// export const ProfileContainer = withAuthRedirect(
-//   connect(mapStateToProps, mapDispatchToProps)(withUrlDataContainerComponent)
-// );

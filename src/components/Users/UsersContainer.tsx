@@ -91,8 +91,3 @@ export const UsersContainer = compose<React.ComponentType>(
   withAuthRedirect,
   connect(mapStateToProps, mapDispatchToProps)
 )(UsersAPIComponent);
-
-// export const UsersContainer = withAuthRedirect(connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(UsersAPIComponent))
