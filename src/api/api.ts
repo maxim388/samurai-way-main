@@ -8,13 +8,18 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-type useerAPI = {
+type usersAPIType = {
   getUsers: (page: number, count: number) => Promise<any>;
   followUser: (userId: number) => Promise<any>;
   unfollowUser: (userId: number) => Promise<any>;
+  getProfileUser: (userId: number) => Promise<any>;
 };
 
-export const usersAPI: useerAPI = {
+type authAPIType = {
+  authMe: () => Promise<any>;
+};
+
+export const usersAPI: usersAPIType = {
   getUsers(page: number = 1, count: number = 10) {
     return instance
       .get(`users?page=${page}&count=${count}`)
@@ -25,5 +30,16 @@ export const usersAPI: useerAPI = {
   },
   unfollowUser(userId: number) {
     return instance.delete(`follow/${userId}`);
+  },
+  getProfileUser(userId: number) {
+    return instance.get(
+      `https://social-network.samuraijs.com/api/1.0/profile/${userId}`
+    );
+  },
+};
+
+export const authAPI: authAPIType = {
+  authMe() {
+    return instance.get(`auth/me`);
   },
 };

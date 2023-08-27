@@ -6,7 +6,6 @@ import {
   followThunkCreator,
   getUsersThunkCreator,
   setCurrentPageAC,
-  toggleFollowingProgressAC,
   unfollowAC,
   unfollowThunkCreator,
 } from "../../reducers/users-reducer";
@@ -20,7 +19,6 @@ type MapDispatchToPropsType = {
   followSuccess: (userId: number) => void;
   unfollowSuccess: (userId: number) => void;
   setCurrentPage: (currentPage: number) => void;
-  toggleFollowingProgress: (isProgress: boolean) => void;
   getUsers: (currentPage: number, pageSize: number) => void;
   unfollowTC: (userId: number) => Function;
   followTC: (userId: number) => Function;
@@ -43,7 +41,6 @@ const mapDispatchToProps: MapDispatchToPropsType = {
   followSuccess: followAC,
   unfollowSuccess: unfollowAC,
   setCurrentPage: setCurrentPageAC,
-  toggleFollowingProgress: toggleFollowingProgressAC,
   getUsers: getUsersThunkCreator,
   unfollowTC: unfollowThunkCreator,
   followTC: followThunkCreator,
@@ -79,7 +76,6 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
             onPageChanged={this.onPageChanged}
             users={this.props.users}
             followingInProgress={this.props.followingInProgress}
-            toggleFollowingProgress={this.props.toggleFollowingProgress}
             unfollowTC={this.props.unfollowTC}
             followTC={this.props.followTC}
           />

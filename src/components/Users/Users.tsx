@@ -9,7 +9,6 @@ type UserPropsType = {
   users: UserType[];
   currentPage: number;
   followingInProgress: boolean;
-  toggleFollowingProgress: (isProgress: boolean) => void;
   onPageChanged: (pageNumber: number) => void;
   unfollowTC: (userId: number) => Function;
   followTC: (userId: number) => Function;
@@ -20,11 +19,11 @@ export const Users: React.FC<UserPropsType> = ({
   users,
   currentPage,
   onPageChanged,
-  toggleFollowingProgress,
   followingInProgress,
   unfollowTC,
   followTC,
 }) => {
+  debugger;
   return (
     <div>
       <div>
@@ -57,7 +56,7 @@ export const Users: React.FC<UserPropsType> = ({
                   <button
                     disabled={followingInProgress}
                     onClick={() => {
-                      followTC(u.id);
+                      unfollowTC(u.id);
                     }}
                   >
                     Follow
@@ -66,7 +65,7 @@ export const Users: React.FC<UserPropsType> = ({
                   <button
                     disabled={followingInProgress}
                     onClick={() => {
-                      unfollowTC(u.id);
+                      followTC(u.id);
                     }}
                   >
                     Unfollow
