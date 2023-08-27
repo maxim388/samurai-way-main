@@ -3,10 +3,8 @@ import { Header } from "./Header";
 import { connect } from "react-redux";
 import {
   authThunkCreator,
-  setAuthUserDataAC,
 } from "../../reducers/auth-reducer";
 import { StateType } from "../../redux/redux-store";
-import { authAPI } from "../../api/api";
 
 type MapStateToPropsType = {
   isAuth: boolean;

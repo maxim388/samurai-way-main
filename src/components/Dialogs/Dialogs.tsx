@@ -3,11 +3,8 @@ import { Mesassage } from "./Message/Message";
 import { DialogItem } from "./DialogItem/DialogItem";
 import { ChangeEvent } from "react";
 import { DialogsPropsType } from "./DialogsContainer";
-import { Redirect } from "react-router-dom";
 
 export const Dialogs = (props: DialogsPropsType) => {
-
-  if (!props.isAuth) return <Redirect to={"/login"} />;
 
   const gialogsElements = props.dialogs.map((d) => {
     return <DialogItem key={d.id} name={d.name} id={d.id} />;

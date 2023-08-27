@@ -8,12 +8,12 @@ import {
 import { StateType } from "../../redux/redux-store";
 import { Dialogs } from "./Dialogs";
 import { Dispatch } from "redux";
+import { withAuthRedirect } from "../../HOC/withAuthRedirect";
 
 type MapStatePropsType = {
   dialogs: Array<DialogDataType>;
   messages: Array<MessagesDataType>;
   newMessageText: string;
-  isAuth: boolean;
 };
 
 type MapDispatchToPropsType = {
@@ -28,7 +28,6 @@ const mapStateToProps = (state: StateType): MapStatePropsType => {
     dialogs: state.dialogsPage.dialogs,
     messages: state.dialogsPage.messages,
     newMessageText: state.dialogsPage.newMessageText,
-    isAuth: state.auth.isAuth,
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
@@ -42,7 +41,6 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
   };
 };
 
-export const DialogsContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dialogs);
+export const DialogsContainer = withAuthRedirect(
+  connect(mapStateToProps, mapDispatchToProps)(Dialogs)
+);

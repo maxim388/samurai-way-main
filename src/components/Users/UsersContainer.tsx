@@ -12,6 +12,7 @@ import {
 import React from "react";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader";
+import { withAuthRedirect } from "../../HOC/withAuthRedirect";
 
 type MapStateToPropsType = UsersPageType;
 
@@ -85,7 +86,9 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
   }
 }
 
-export const UsersContainer = connect(
+export const UsersContainer = withAuthRedirect(connect(
   mapStateToProps,
   mapDispatchToProps
-)(UsersAPIComponent);
+)(UsersAPIComponent))
+
+
