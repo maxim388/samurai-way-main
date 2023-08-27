@@ -4,6 +4,7 @@ const SET_USERS = "SET_USERS";
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
 
 export type LocationUserType = {
   city: string;
@@ -25,6 +26,7 @@ export type UsersPageType = {
   totalUsersCount: number;
   currentPage: number;
   isFetching: boolean;
+  followingInProgress: boolean;
 };
 
 let initialState = {
@@ -33,6 +35,7 @@ let initialState = {
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
+  followingInProgress: false,
 };
 
 export const usersReducer = (
@@ -71,7 +74,6 @@ export const usersReducer = (
           totalUsersCount: action.totalUsersCount,
         };
       }
-
     case SET_CURRENT_PAGE:
       return {
         ...state,
@@ -80,7 +82,12 @@ export const usersReducer = (
     case TOGGLE_IS_FETCHING:
       return {
         ...state,
-        isFetching: action.isFetching
+        isFetching: action.isFetching,
+      };
+    case TOGGLE_IS_FOLLOWING_PROGRESS:
+      return {
+        ...state,
+        followingInProgress: action.isProgress,
       };
     default:
       return state;
@@ -93,7 +100,8 @@ type ActionTypes =
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof setTotalUsersCountAC>
   | ReturnType<typeof setCurrentPageAC>
-  | ReturnType<typeof toggleIsFetchingAC>;
+  | ReturnType<typeof toggleIsFetchingAC>
+  | ReturnType<typeof toggleFollowingProgressAC>;
 
 export const followAC = (userId: number) => {
   return {
@@ -134,5 +142,12 @@ export const toggleIsFetchingAC = (isFetching: boolean) => {
   return {
     type: TOGGLE_IS_FETCHING,
     isFetching,
+  } as const;
+};
+
+export const toggleFollowingProgressAC = (isProgress: boolean) => {
+  return {
+    type: TOGGLE_IS_FOLLOWING_PROGRESS,
+    isProgress,
   } as const;
 };

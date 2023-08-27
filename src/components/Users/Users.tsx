@@ -10,6 +10,8 @@ type UserPropsType = {
   users: UserType[];
   currentPage: number;
   isFetching: boolean;
+  followingInProgress: boolean;
+  toggleFollowingProgress: (isProgress: boolean) => void;
   onPageChanged: (pageNumber: number) => void;
   follow: (userId: number) => void;
   unfollow: (userId: number) => void;
@@ -22,6 +24,9 @@ export const Users: React.FC<UserPropsType> = ({
   onPageChanged,
   unfollow,
   follow,
+  toggleFollowingProgress,
+  followingInProgress,
+  ...restProps
 }) => {
   return (
     <div>
@@ -53,7 +58,9 @@ export const Users: React.FC<UserPropsType> = ({
               <div>
                 {u.followed ? (
                   <button
+                    disabled={followingInProgress}
                     onClick={() => {
+                      toggleFollowingProgress(true);
                       axios
                         .delete(
                           `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
@@ -70,13 +77,16 @@ export const Users: React.FC<UserPropsType> = ({
                             unfollow(u.id);
                           }
                         });
+                      toggleFollowingProgress(false);
                     }}
                   >
                     Follow
                   </button>
                 ) : (
                   <button
+                    disabled={followingInProgress}
                     onClick={() => {
+                      toggleFollowingProgress(true);
                       axios
                         .post(
                           `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
@@ -93,6 +103,7 @@ export const Users: React.FC<UserPropsType> = ({
                             follow(u.id);
                           }
                         });
+                      toggleFollowingProgress(false);
                     }}
                   >
                     Unfollow

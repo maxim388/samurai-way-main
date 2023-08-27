@@ -34,6 +34,7 @@ beforeEach(() => {
     totalUsersCount: 0,
     currentPage: 2,
     isFetching: false,
+    followingInProgress: false,
   };
 });
 

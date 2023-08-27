@@ -7,6 +7,7 @@ import {
   setCurrentPageAC,
   setTotalUsersCountAC,
   setUsersAC,
+  toggleFollowingProgressAC,
   toggleIsFetchingAC,
   unfollowAC,
 } from "../../reducers/users-reducer";
@@ -24,6 +25,7 @@ type MapDispatchToPropsType = {
   setCurrentPage: (currentPage: number) => void;
   setTotalUsersCount: (totalCount: number) => void;
   toggleIsFetching: (isFetching: boolean) => void;
+  toggleFollowingProgress: (isProgress: boolean) => void;
 };
 
 type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
@@ -35,6 +37,7 @@ const mapStateToProps = (state: StateType): MapStateToPropsType => {
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress,
   };
 };
 // connect сам оборачивает dispatch'ем каждле свойство объекта
@@ -45,6 +48,7 @@ const mapDispatchToProps: MapDispatchToPropsType = {
   setCurrentPage: setCurrentPageAC,
   setTotalUsersCount: setTotalUsersCountAC,
   toggleIsFetching: toggleIsFetchingAC,
+  toggleFollowingProgress: toggleFollowingProgressAC,
 };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
@@ -90,6 +94,8 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
             unfollow={this.props.unfollow}
             follow={this.props.follow}
             isFetching={this.props.isFetching}
+            followingInProgress={this.props.followingInProgress}
+            toggleFollowingProgress={this.props.toggleFollowingProgress}
           />
         )}
       </>
