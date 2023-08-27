@@ -8,16 +8,22 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-export const usersAPI = {
+type useerAPI = {
+  getUsers: (page: number, count: number) => Promise<any>;
+  followUser: (userId: number) => Promise<any>;
+  unfollowUser: (userId: number) => Promise<any>;
+};
+
+export const usersAPI: useerAPI = {
   getUsers(page: number = 1, count: number = 10) {
     return instance
       .get(`users?page=${page}&count=${count}`)
       .then((res) => res.data);
   },
+  followUser(userId: number) {
+    return instance.post(`follow/${userId}`);
+  },
+  unfollowUser(userId: number) {
+    return instance.delete(`follow/${userId}`);
+  },
 };
-
-// export const getUsers = (page: number = 1, count: number = 10) => {
-//   return instance
-//     .get(`users?page=${page}&count=${count}`)
-//     .then((res) => res.data);
-// };

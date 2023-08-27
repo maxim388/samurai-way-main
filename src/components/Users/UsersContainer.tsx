@@ -1,31 +1,29 @@
 import { connect } from "react-redux";
 import { StateType } from "../../redux/redux-store";
 import {
-  UserType,
   UsersPageType,
   followAC,
+  followThunkCreator,
+  getUsersThunkCreator,
   setCurrentPageAC,
-  setTotalUsersCountAC,
-  setUsersAC,
   toggleFollowingProgressAC,
-  toggleIsFetchingAC,
   unfollowAC,
+  unfollowThunkCreator,
 } from "../../reducers/users-reducer";
 import React from "react";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader";
-import { usersAPI } from "../../api/api";
 
 type MapStateToPropsType = UsersPageType;
 
 type MapDispatchToPropsType = {
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
-  setUsers: (users: Array<UserType>) => void;
+  followSuccess: (userId: number) => void;
+  unfollowSuccess: (userId: number) => void;
   setCurrentPage: (currentPage: number) => void;
-  setTotalUsersCount: (totalCount: number) => void;
-  toggleIsFetching: (isFetching: boolean) => void;
   toggleFollowingProgress: (isProgress: boolean) => void;
+  getUsers: (currentPage: number, pageSize: number) => void;
+  unfollowTC: (userId: number) => Function;
+  followTC: (userId: number) => Function;
 };
 
 type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
@@ -42,34 +40,23 @@ const mapStateToProps = (state: StateType): MapStateToPropsType => {
 };
 // connect сам оборачивает dispatch'ем каждле свойство объекта
 const mapDispatchToProps: MapDispatchToPropsType = {
-  follow: followAC,
-  unfollow: unfollowAC,
-  setUsers: setUsersAC,
+  followSuccess: followAC,
+  unfollowSuccess: unfollowAC,
   setCurrentPage: setCurrentPageAC,
-  setTotalUsersCount: setTotalUsersCountAC,
-  toggleIsFetching: toggleIsFetchingAC,
   toggleFollowingProgress: toggleFollowingProgressAC,
+  getUsers: getUsersThunkCreator,
+  unfollowTC: unfollowThunkCreator,
+  followTC: followThunkCreator,
 };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
   componentDidMount = () => {
-    this.props.toggleIsFetching(true);
-    usersAPI
-      .getUsers(this.props.currentPage, this.props.pageSize)
-      .then((res) => {
-        this.props.toggleIsFetching(false);
-        this.props.setUsers(res.items);
-        this.props.setTotalUsersCount(res.totalCount);
-      });
+    this.props.getUsers(this.props.currentPage, this.props.pageSize);
   };
 
   onPageChanged = (pageNumber: number) => {
     this.props.setCurrentPage(pageNumber);
-    this.props.toggleIsFetching(true);
-    usersAPI.getUsers(pageNumber, this.props.pageSize).then((res) => {
-      this.props.toggleIsFetching(false);
-      this.props.setUsers(res.items);
-    });
+    this.props.getUsers(pageNumber, this.props.pageSize);
   };
 
   render() {
@@ -91,11 +78,10 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
             currentPage={this.props.currentPage}
             onPageChanged={this.onPageChanged}
             users={this.props.users}
-            unfollow={this.props.unfollow}
-            follow={this.props.follow}
-            isFetching={this.props.isFetching}
             followingInProgress={this.props.followingInProgress}
             toggleFollowingProgress={this.props.toggleFollowingProgress}
+            unfollowTC={this.props.unfollowTC}
+            followTC={this.props.followTC}
           />
         )}
       </>

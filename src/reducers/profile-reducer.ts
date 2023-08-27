@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
@@ -99,3 +100,4 @@ export const setUserProfileAC = (profile: UserProfileType) => {
     profile,
   } as const;
 };
+

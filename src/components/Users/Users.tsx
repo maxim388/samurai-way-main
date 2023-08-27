@@ -3,18 +3,16 @@ import UserPhoto from "../../assets/users_default_img.jpg";
 import React from "react";
 import { UserType } from "../../reducers/users-reducer";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 
 type UserPropsType = {
   pages: number[];
   users: UserType[];
   currentPage: number;
-  isFetching: boolean;
   followingInProgress: boolean;
   toggleFollowingProgress: (isProgress: boolean) => void;
   onPageChanged: (pageNumber: number) => void;
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
+  unfollowTC: (userId: number) => Function;
+  followTC: (userId: number) => Function;
 };
 
 export const Users: React.FC<UserPropsType> = ({
@@ -22,11 +20,10 @@ export const Users: React.FC<UserPropsType> = ({
   users,
   currentPage,
   onPageChanged,
-  unfollow,
-  follow,
   toggleFollowingProgress,
   followingInProgress,
-  ...restProps
+  unfollowTC,
+  followTC,
 }) => {
   return (
     <div>
@@ -60,24 +57,7 @@ export const Users: React.FC<UserPropsType> = ({
                   <button
                     disabled={followingInProgress}
                     onClick={() => {
-                      toggleFollowingProgress(true);
-                      axios
-                        .delete(
-                          `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
-                          {
-                            headers: {
-                              "API-KEY": "41b0e7ee-a396-4123-8fc6-d9277f02bce7",
-                            },
-                            withCredentials: true,
-                          }
-                        )
-
-                        .then((response) => {
-                          if (!response.data.resultCode) {
-                            unfollow(u.id);
-                          }
-                        });
-                      toggleFollowingProgress(false);
+                      followTC(u.id);
                     }}
                   >
                     Follow
@@ -86,24 +66,7 @@ export const Users: React.FC<UserPropsType> = ({
                   <button
                     disabled={followingInProgress}
                     onClick={() => {
-                      toggleFollowingProgress(true);
-                      axios
-                        .post(
-                          `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
-                          {},
-                          {
-                            headers: {
-                              "API-KEY": "41b0e7ee-a396-4123-8fc6-d9277f02bce7",
-                            },
-                            withCredentials: true,
-                          }
-                        )
-                        .then((response) => {
-                          if (!response.data.resultCode) {
-                            follow(u.id);
-                          }
-                        });
-                      toggleFollowingProgress(false);
+                      unfollowTC(u.id);
                     }}
                   >
                     Unfollow
