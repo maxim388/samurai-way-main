@@ -11,6 +11,7 @@ import {
 } from "../../reducers/users-reducer";
 import React from "react";
 import { Users } from "./Users";
+import { compose } from "redux";
 import { Preloader } from "../common/Preloader";
 import { withAuthRedirect } from "../../HOC/withAuthRedirect";
 
@@ -86,9 +87,12 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
   }
 }
 
-export const UsersContainer = withAuthRedirect(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UsersAPIComponent))
+export const UsersContainer = compose<React.ComponentType>(
+  withAuthRedirect,
+  connect(mapStateToProps, mapDispatchToProps)
+)(UsersAPIComponent);
 
-
+// export const UsersContainer = withAuthRedirect(connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(UsersAPIComponent))

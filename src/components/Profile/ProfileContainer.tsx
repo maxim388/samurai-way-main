@@ -7,7 +7,8 @@ import {
   setUserProfileAC,
 } from "../../reducers/profile-reducer";
 import { StateType } from "../../redux/redux-store";
-import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { withAuthRedirect } from "../../HOC/withAuthRedirect";
 
 type ProfilePropsType = MapStateToPropsType & MapDispatchToPropsType;
@@ -55,6 +56,14 @@ const mapDispatchToProps: MapDispatchToPropsType = {
 
 const withUrlDataContainerComponent = withRouter(ProfileAPIContainer);
 
-export const ProfileContainer = withAuthRedirect(
-  connect(mapStateToProps, mapDispatchToProps)(withUrlDataContainerComponent)
-);
+export const ProfileContainer = compose<React.ComponentType>(
+  withAuthRedirect,
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter
+)(ProfileAPIContainer);
+
+// const withUrlDataContainerComponent = withRouter(ProfileAPIContainer);
+
+// export const ProfileContainer = withAuthRedirect(
+//   connect(mapStateToProps, mapDispatchToProps)(withUrlDataContainerComponent)
+// );
