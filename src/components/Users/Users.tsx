@@ -23,7 +23,6 @@ export const Users: React.FC<UserPropsType> = ({
   unfollowTC,
   followTC,
 }) => {
-  debugger;
   return (
     <div>
       <div>
