@@ -137,7 +137,7 @@ export const getStatusThunkCreator = (userId: number) => {
 export const updateStatusThunkCreator = (status: string) => {
   return (dispatch: Dispatch) => {
     profileAPI.updateStatus(status).then((res) => {
-      dispatch(setStatusAC(res.data));
+      dispatch(setStatusAC(status));
     });
   };
 };

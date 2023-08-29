@@ -44,6 +44,8 @@ export class ProfileAPIContainer extends React.Component<PropsType> {
     this.props.getUserProfileTC(userId);
     this.props.getStatusTC(userId);
   }
+
+  
   render() {
     return (
       <Profile
