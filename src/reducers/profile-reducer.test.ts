@@ -1,4 +1,9 @@
-import { ProfilePageType, addPostAC, profileReducer, updateNewPostTextAC } from "./profile-reducer";
+import {
+  ProfilePageType,
+  addPostAC,
+  profileReducer,
+  updateNewPostTextAC,
+} from "./profile-reducer";
 
 let startState: ProfilePageType;
 
@@ -12,6 +17,7 @@ beforeEach(() => {
     ],
     newPostText: "",
     profile: null,
+    status: "",
   };
 });
 
@@ -28,7 +34,6 @@ test("correct new post should be added to the array posts| case ADD_POST", () =>
   expect(endState.posts).not.toBe(startState.posts);
   expect(endState.posts[0].id).toBe(1);
 });
-
 
 test("correct new post message should be update to the newPostText | case UPDATE_NEW_POST_TEXT", () => {
   const action = updateNewPostTextAC("yo");

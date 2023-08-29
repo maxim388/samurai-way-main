@@ -5,9 +5,15 @@ import { ProfileStatus } from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
   profile: null | UserProfileType;
+  status: string;
+  updateStatusTC: (status: string) => Function;
 };
 
-export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({ profile }) => {
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
+  profile,
+  status,
+  updateStatusTC,
+}) => {
   if (!profile) {
     return <Preloader />;
   } else {
@@ -21,7 +27,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({ profile }) => {
         </div>
         <div className={s.desctiptionBlock}>
           <img src={profile?.photos.large} alt="ava" />
-          <ProfileStatus status={"fdfs"}/>
+          <ProfileStatus status={status} updateStatusTC={updateStatusTC} />
         </div>
       </div>
     );

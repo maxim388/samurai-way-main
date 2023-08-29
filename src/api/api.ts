@@ -12,7 +12,12 @@ type usersAPIType = {
   getUsers: (page: number, count: number) => Promise<any>;
   followUser: (userId: number) => Promise<any>;
   unfollowUser: (userId: number) => Promise<any>;
-  getProfileUser: (userId: number) => Promise<any>;
+};
+
+type profileAPIType = {
+  getProfile: (userId: number) => Promise<any>;
+  getStatus: (userId: number) => Promise<any>;
+  updateStatus: (status: string) => Promise<any>;
 };
 
 type authAPIType = {
@@ -31,10 +36,17 @@ export const usersAPI: usersAPIType = {
   unfollowUser(userId: number) {
     return instance.delete(`follow/${userId}`);
   },
-  getProfileUser(userId: number) {
-    return instance.get(
-      `https://social-network.samuraijs.com/api/1.0/profile/${userId}`
-    );
+};
+
+export const profileAPI: profileAPIType = {
+  getProfile(userId: number) {
+    return instance.get(`profile/${userId}`);
+  },
+  getStatus(userId: number) {
+    return instance.get(`profile/status/${userId}`);
+  },
+  updateStatus(status: string) {
+    return instance.put(`profile/status`, { status: status });
   },
 };
 

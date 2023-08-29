@@ -88,6 +88,6 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
 }
 
 export const UsersContainer = compose<React.ComponentType>(
-  withAuthRedirect,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  withAuthRedirect
 )(UsersAPIComponent);

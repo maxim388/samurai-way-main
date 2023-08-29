@@ -3,8 +3,10 @@ import { Profile } from "./Profile";
 import { connect } from "react-redux";
 import {
   UserProfileType,
+  getStatusThunkCreator,
   getUserProfileThunkCreator,
   setUserProfileAC,
+  updateStatusThunkCreator,
 } from "../../reducers/profile-reducer";
 import { StateType } from "../../redux/redux-store";
 import { compose } from "redux";
@@ -15,11 +17,14 @@ type ProfilePropsType = MapStateToPropsType & MapDispatchToPropsType;
 
 type MapStateToPropsType = {
   profile: null | UserProfileType;
+  status: string;
 };
 
 type MapDispatchToPropsType = {
   setUserProfile: (profile: UserProfileType) => void;
   getUserProfileTC: (userId: number) => Function;
+  getStatusTC: (userId: number) => Function;
+  updateStatusTC: (status: string) => Function;
 };
 
 type PathParamsType = {
@@ -30,34 +35,42 @@ type PropsType = RouteComponentProps<PathParamsType> & ProfilePropsType;
 
 export class ProfileAPIContainer extends React.Component<PropsType> {
   componentDidMount() {
-    let userId;
+    let userId: number;
     if (this.props.match.params.userId) {
-      userId = this.props.match.params.userId;
+      userId = Number(this.props.match.params.userId);
     } else {
-      userId = "2";
+      userId = 29750;
     }
-    this.props.getUserProfileTC(Number(userId));
+    this.props.getUserProfileTC(userId);
+    this.props.getStatusTC(userId);
   }
   render() {
-    return <Profile profile={this.props.profile} />;
+    return (
+      <Profile
+        profile={this.props.profile}
+        status={this.props.status}
+        updateStatusTC={this.props.updateStatusTC}
+      />
+    );
   }
 }
 
 const mapStateToProps = (state: StateType): MapStateToPropsType => {
   return {
     profile: state.profilePage.profile,
+    status: state.profilePage.status,
   };
 };
 
 const mapDispatchToProps: MapDispatchToPropsType = {
   setUserProfile: setUserProfileAC,
   getUserProfileTC: getUserProfileThunkCreator,
+  getStatusTC: getStatusThunkCreator,
+  updateStatusTC: updateStatusThunkCreator,
 };
 
-const withUrlDataContainerComponent = withRouter(ProfileAPIContainer);
-
 export const ProfileContainer = compose<React.ComponentType>(
-  withAuthRedirect,
   connect(mapStateToProps, mapDispatchToProps),
-  withRouter
+  withRouter,
+  withAuthRedirect
 )(ProfileAPIContainer);
