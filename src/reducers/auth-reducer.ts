@@ -3,14 +3,14 @@ import { authAPI } from "../api/api";
 
 const SET_USER_DATA = "SET_USER_DATA";
 
-type AuthType = {
+export type AuthType = {
   id: number | null;
   login: string | null;
   email: string | null;
   isAuth: boolean
 };
 
-let initialState: AuthType = {
+const initialState: AuthType = {
   id: null,
   login: null,
   email: null,
@@ -35,10 +35,10 @@ export const authReducer = (
 
 type ActionTypes = ReturnType<typeof setAuthUserDataAC>;
 
-export const setAuthUserDataAC = (userId: string, email: string, login: string) => {
+export const setAuthUserDataAC = (id: number, email: string, login: string) => {
   return {
     type: SET_USER_DATA,
-    data: { userId, email, login },
+    data: { id, email, login },
   } as const;
 };
 
