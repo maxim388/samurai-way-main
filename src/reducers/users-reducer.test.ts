@@ -4,6 +4,8 @@ import {
   setCurrentPageAC,
   setTotalUsersCountAC,
   setUsersAC,
+  toggleFollowingProgressAC,
+  toggleIsFetchingAC,
   unfollowAC,
   usersReducer,
 } from "./users-reducer";
@@ -96,4 +98,18 @@ test("correct current page should be update to the state | case SET_CURRENT_PAGE
   const endState = usersReducer(startState, action);
 
   expect(endState.currentPage).toBe(10);
+});
+
+test("correct current status fetching should be update | case TOGGLE_IS_FETCHING", () => {
+  const action = toggleIsFetchingAC(true);
+  const endState = usersReducer(startState, action);
+
+  expect(endState.isFetching).toBe(true);
+});
+
+test("correct current status following progress should be update | case TOGGLE_IS_FOLLOWING_PROGRESS", () => {
+  const action = toggleFollowingProgressAC(true);
+  const endState = usersReducer(startState, action);
+
+  expect(endState.followingInProgress).toBe(true);
 });

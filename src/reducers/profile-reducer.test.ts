@@ -82,6 +82,3 @@ test("correct status should be update | case SET_STATUS", () => {
   expect(endState.status).toBe("Hello");
   expect(endState).not.toBe(startState);
 });
-
-// case SET_STATUS:
-//   return { ...state, status: action.status };
