@@ -2,6 +2,7 @@ import {
   ProfilePageType,
   addPostAC,
   profileReducer,
+  setUserProfileAC,
   updateNewPostTextAC,
 } from "./profile-reducer";
 
@@ -43,3 +44,33 @@ test("correct new post message should be update to the newPostText | case UPDATE
   expect(endState.posts.length).toBe(startState.posts.length);
   expect(endState.posts).toBe(startState.posts);
 });
+
+test("correct new profile user | case SET_USER_PROFILE", () => {
+  let newProfile = {
+    aboutMe: "hi everyone!)",
+    contacts: {
+      facebook: "facebook",
+      website: null,
+      vk: "vk",
+      twitter: "twitter",
+      instagram: "instagram",
+      youtube: null,
+      github: "https://github.com/maxim388",
+      mainLink: null,
+    },
+    lookingForAJob: true,
+    lookingForAJobDescription: "looking",
+    fullName: "maxim",
+    userId: 29750,
+    photos: {
+      small: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+      large: "",
+    },
+  };
+  const action = setUserProfileAC(newProfile);
+  const endState = profileReducer(startState, action);
+
+  expect(endState.profile!.userId).toBe(29750);
+  expect(endState.profile).not.toBe(startState.profile);
+});
+

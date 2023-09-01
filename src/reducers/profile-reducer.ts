@@ -24,7 +24,7 @@ export type UserProfileType = {
     github: string;
     mainLink: null;
   };
-  lookingForAJob: true;
+  lookingForAJob: boolean;
   lookingForAJobDescription: string;
   fullName: string;
   userId: number;

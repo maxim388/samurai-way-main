@@ -1,4 +1,3 @@
-//test for auth-reducer
 //test case SET_USER_PROFILE
 //test case TOGGLE_IS_FOLLOWING_PROGRESS
 //added useMemo
