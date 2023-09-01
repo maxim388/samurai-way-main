@@ -2,6 +2,7 @@ import {
   ProfilePageType,
   addPostAC,
   profileReducer,
+  setStatusAC,
   setUserProfileAC,
   updateNewPostTextAC,
 } from "./profile-reducer";
@@ -74,3 +75,13 @@ test("correct new profile user | case SET_USER_PROFILE", () => {
   expect(endState.profile).not.toBe(startState.profile);
 });
 
+test("correct status should be update | case SET_STATUS", () => {
+  const action = setStatusAC("Hello");
+  const endState = profileReducer(startState, action);
+
+  expect(endState.status).toBe("Hello");
+  expect(endState).not.toBe(startState);
+});
+
+// case SET_STATUS:
+//   return { ...state, status: action.status };
