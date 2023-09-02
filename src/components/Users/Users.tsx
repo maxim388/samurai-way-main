@@ -1,15 +1,17 @@
 import s from "./Users.module.css";
 import UserPhoto from "../../assets/users_default_img.jpg";
 import React from "react";
-import { UserType } from "../../redux/users-reducer";
+import { UserType } from "../../reducers/users-reducer";
+import { NavLink } from "react-router-dom";
 
 type UserPropsType = {
   pages: number[];
   users: UserType[];
   currentPage: number;
+  followingInProgress: boolean;
   onPageChanged: (pageNumber: number) => void;
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
+  unfollowTC: (userId: number) => Function;
+  followTC: (userId: number) => Function;
 };
 
 export const Users: React.FC<UserPropsType> = ({
@@ -17,8 +19,9 @@ export const Users: React.FC<UserPropsType> = ({
   users,
   currentPage,
   onPageChanged,
-  unfollow,
-  follow,
+  followingInProgress,
+  unfollowTC,
+  followTC,
 }) => {
   return (
     <div>
@@ -34,34 +37,37 @@ export const Users: React.FC<UserPropsType> = ({
           );
         })}
       </div>
-      {/* <button onClick={this.getUsers}>getUsers</button> */}
       {users.map((u) => {
         return (
           <div key={u.id}>
             <span>
               <div>
-                <img
-                  alt=""
-                  src={u.photos.small !== null ? u.photos.small : UserPhoto}
-                  className={s.ava}
-                />
+                <NavLink to={`/profile/${u.id}`}>
+                  <img
+                    alt="ava"
+                    src={u.photos.small !== null ? u.photos.small : UserPhoto}
+                    className={s.ava}
+                  />
+                </NavLink>
               </div>
               <div>
                 {u.followed ? (
                   <button
+                    disabled={followingInProgress}
                     onClick={() => {
-                      unfollow(u.id);
-                    }}
-                  >
-                    Follow
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      follow(u.id);
+                      unfollowTC(u.id);
                     }}
                   >
                     Unfollow
+                  </button>
+                ) : (
+                  <button
+                    disabled={followingInProgress}
+                    onClick={() => {
+                      followTC(u.id);
+                    }}
+                  >
+                    Follow
                   </button>
                 )}
               </div>

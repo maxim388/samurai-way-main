@@ -3,6 +3,14 @@
   background-color: #99c799;
 }
 
-header > img {
+header>img {
   height: 60px;
+}
+
+.loginBlock {
+  float: right;
+}
+
+.loginBlock a {
+  color: white;
 }

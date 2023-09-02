@@ -1,105 +1,93 @@
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { StateType } from "../../redux/redux-store";
 import {
-  UserType,
   UsersPageType,
   followAC,
+  followThunkCreator,
+  getUsersThunkCreator,
   setCurrentPageAC,
-  setTotalUsersCountAC,
-  setUsersAC,
   unfollowAC,
-} from "../../redux/users-reducer";
-import axios from "axios";
+  unfollowThunkCreator,
+} from "../../reducers/users-reducer";
 import React from "react";
 import { Users } from "./Users";
+import { compose } from "redux";
+import { Preloader } from "../common/Preloader";
+import { withAuthRedirect } from "../../HOC/withAuthRedirect";
 
-type MapStatePropsType = UsersPageType;
+type MapStateToPropsType = UsersPageType;
 
 type MapDispatchToPropsType = {
-  follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
-  setUsers: (users: Array<UserType>) => void;
+  followSuccess: (userId: number) => void;
+  unfollowSuccess: (userId: number) => void;
   setCurrentPage: (currentPage: number) => void;
-  setTotalUsersCount: (totalCount: number) => void;
+  getUsers: (currentPage: number, pageSize: number) => void;
+  unfollowTC: (userId: number) => Function;
+  followTC: (userId: number) => Function;
 };
 
-export type UsersContainerPropsType = MapStatePropsType &
-  MapDispatchToPropsType;
+type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStatePropsType => {
+const mapStateToProps = (state: StateType): MapStateToPropsType => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
+    isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress,
   };
 };
-
-const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-  return {
-    follow: (userId: number) => {
-      dispatch(followAC(userId));
-    },
-    unfollow: (userId: number) => {
-      dispatch(unfollowAC(userId));
-    },
-    setUsers: (users: Array<UserType>) => {
-      dispatch(setUsersAC(users));
-    },
-    setCurrentPage: (currentPage: number) => {
-      dispatch(setCurrentPageAC(currentPage));
-    },
-    setTotalUsersCount: (totalCount: number) => {
-      dispatch(setTotalUsersCountAC(totalCount));
-    },
-  };
+// connect сам оборачивает dispatch'ем каждле свойство объекта
+const mapDispatchToProps: MapDispatchToPropsType = {
+  followSuccess: followAC,
+  unfollowSuccess: unfollowAC,
+  setCurrentPage: setCurrentPageAC,
+  getUsers: getUsersThunkCreator,
+  unfollowTC: unfollowThunkCreator,
+  followTC: followThunkCreator,
 };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
-  componentDidMount = (): void => {
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
-      )
-      .then((response) => {
-        this.props.setUsers(response.data.items);
-        this.props.setTotalUsersCount(response.data.totalCount);
-      });
+  componentDidMount = () => {
+    this.props.getUsers(this.props.currentPage, this.props.pageSize);
   };
 
   onPageChanged = (pageNumber: number) => {
     this.props.setCurrentPage(pageNumber);
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`
-      )
-      .then((response) => {
-        this.props.setUsers(response.data.items);
-      });
+    this.props.getUsers(pageNumber, this.props.pageSize);
   };
+
   render() {
+    let pages = [];
     let pagesCount = Math.ceil(
       this.props.totalUsersCount / this.props.pageSize
     );
-    let pages = [];
+
     for (let i = 1; i <= pagesCount; i++) {
       pages.push(i);
     }
     return (
-      <Users
-        pages={pages}
-        currentPage={this.props.currentPage}
-        onPageChanged={this.onPageChanged}
-        users={this.props.users}
-        unfollow={this.props.unfollow}
-        follow={this.props.follow}
-      />
+      <>
+        {this.props.isFetching ? (
+          <Preloader />
+        ) : (
+          <Users
+            pages={pages}
+            currentPage={this.props.currentPage}
+            onPageChanged={this.onPageChanged}
+            users={this.props.users}
+            followingInProgress={this.props.followingInProgress}
+            unfollowTC={this.props.unfollowTC}
+            followTC={this.props.followTC}
+          />
+        )}
+      </>
     );
   }
 }
 
-export const UsersContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
+export const UsersContainer = compose<React.ComponentType>(
+  connect(mapStateToProps, mapDispatchToProps),
+  withAuthRedirect
 )(UsersAPIComponent);

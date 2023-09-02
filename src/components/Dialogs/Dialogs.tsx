@@ -4,15 +4,8 @@ import { DialogItem } from "./DialogItem/DialogItem";
 import { ChangeEvent } from "react";
 import { DialogsPropsType } from "./DialogsContainer";
 
-// export type DialogsPropsType = {
-//   dialogs: Array<DialogDataType>;
-//   messages: Array<MessagesDataType>;
-//   newMessageText: string;
-//   onSendMesageClick: () => void;
-//   onNewMessageChange: (massege: string) => void;
-// };
-
 export const Dialogs = (props: DialogsPropsType) => {
+
   const gialogsElements = props.dialogs.map((d) => {
     return <DialogItem key={d.id} name={d.name} id={d.id} />;
   });
@@ -28,6 +21,7 @@ export const Dialogs = (props: DialogsPropsType) => {
     let message = e.currentTarget.value;
     props.onNewMessageChange(message);
   };
+
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{gialogsElements}</div>

@@ -1,8 +1,13 @@
+import { Dispatch } from "redux";
+import { usersAPI } from "../api/api";
+
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
+const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
 
 export type LocationUserType = {
   city: string;
@@ -23,13 +28,17 @@ export type UsersPageType = {
   pageSize: number;
   totalUsersCount: number;
   currentPage: number;
+  isFetching: boolean;
+  followingInProgress: boolean;
 };
 
 let initialState = {
   users: [],
   pageSize: 5,
   totalUsersCount: 0,
-  currentPage: 2,
+  currentPage: 1,
+  isFetching: false,
+  followingInProgress: false,
 };
 
 export const usersReducer = (
@@ -68,13 +77,21 @@ export const usersReducer = (
           totalUsersCount: action.totalUsersCount,
         };
       }
-
     case SET_CURRENT_PAGE:
       return {
         ...state,
         currentPage: action.currentPage,
       };
-
+    case TOGGLE_IS_FETCHING:
+      return {
+        ...state,
+        isFetching: action.isFetching,
+      };
+    case TOGGLE_IS_FOLLOWING_PROGRESS:
+      return {
+        ...state,
+        followingInProgress: action.isProgress,
+      };
     default:
       return state;
   }
@@ -85,7 +102,9 @@ type ActionTypes =
   | ReturnType<typeof unfollowAC>
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof setTotalUsersCountAC>
-  | ReturnType<typeof setCurrentPageAC>;
+  | ReturnType<typeof setCurrentPageAC>
+  | ReturnType<typeof toggleIsFetchingAC>
+  | ReturnType<typeof toggleFollowingProgressAC>;
 
 export const followAC = (userId: number) => {
   return {
@@ -120,4 +139,49 @@ export const setCurrentPageAC = (currentPage: number) => {
     type: SET_CURRENT_PAGE,
     currentPage,
   } as const;
+};
+
+export const toggleIsFetchingAC = (isFetching: boolean) => {
+  return {
+    type: TOGGLE_IS_FETCHING,
+    isFetching,
+  } as const;
+};
+
+export const toggleFollowingProgressAC = (isProgress: boolean) => {
+  return {
+    type: TOGGLE_IS_FOLLOWING_PROGRESS,
+    isProgress,
+  } as const;
+};
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleIsFetchingAC(true));
+    usersAPI.getUsers(currentPage, pageSize).then((res) => {
+      dispatch(toggleIsFetchingAC(false));
+      dispatch(setUsersAC(res.items));
+      dispatch(setTotalUsersCountAC(res.totalCount));
+    });
+  };
+};
+
+export const followThunkCreator = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    usersAPI.followUser(userId).then((res) => {
+      if (!res.data.resultCode) {
+        dispatch(followAC(userId));
+      }
+    });
+  };
+};
+
+export const unfollowThunkCreator = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    usersAPI.unfollowUser(userId).then((res) => {
+      if (!res.data.resultCode) {
+        dispatch(unfollowAC(userId));
+      }
+    });
+  };
 };

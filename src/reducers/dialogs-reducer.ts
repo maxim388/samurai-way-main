@@ -17,7 +17,7 @@ export type DialogsPageType = {
   newMessageText: string;
 };
 
-let initialState = {
+const initialState = {
   dialogs: [
     { id: 1, name: "Dimych" },
     { id: 2, name: "Andrew" },

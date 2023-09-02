@@ -1,14 +1,35 @@
+import { UserProfileType } from "../../../reducers/profile-reducer";
+import { Preloader } from "../../common/Preloader";
 import s from "./ProfileInfo.module.css";
+import { ProfileStatus } from "./ProfileStatus";
 
-export type ProfileInfoPropsType = {};
+type ProfileInfoPropsType = {
+  profile: null | UserProfileType;
+  status: string;
+  updateStatusTC: (status: string) => Function;
+};
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
-  return (
-    <div>
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
+  profile,
+  status,
+  updateStatusTC,
+}) => {
+  if (!profile) {
+    return <Preloader />;
+  } else {
+    return (
       <div>
-        <img src="https://s1.1zoom.ru/big0/234/Sea_Sky_Beach_Sunlounger_Sand_Rest_580068_1280x853.jpg" />
+        <div>
+          {/* <img
+            src="https://s1.1zoom.ru/big0/234/Sea_Sky_Beach_Sunlounger_Sand_Rest_580068_1280x853.jpg"
+            alt="background"
+          /> */}
+        </div>
+        <div className={s.desctiptionBlock}>
+          <img src={profile?.photos.large} alt="ava" />
+          <ProfileStatus status={status} updateStatusTC={updateStatusTC} />
+        </div>
       </div>
-      <div className={s.desctiptionBlock}>ava + desctiption</div>
-    </div>
-  );
+    );
+  }
 };
