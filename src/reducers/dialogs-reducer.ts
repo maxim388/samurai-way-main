@@ -17,19 +17,19 @@ export type DialogsPageType = {
 
 const initialState = {
   dialogs: [
-    { id: 1, name: "Dimych" },
-    { id: 2, name: "Andrew" },
-    { id: 3, name: "Sveta" },
-    { id: 4, name: "Sasha" },
-    { id: 5, name: "Viktor" },
-    { id: 6, name: "Valera" },
+    { id: 0, name: "Dimych" },
+    { id: 1, name: "Andrew" },
+    { id: 2, name: "Sveta" },
+    { id: 3, name: "Sasha" },
+    { id: 4, name: "Viktor" },
+    { id: 5, name: "Valera" },
   ],
   messages: [
-    { id: 1, message: "Hi" },
-    { id: 2, message: "How is your it-kamasutra?" },
+    { id: 0, message: "Hi" },
+    { id: 1, message: "How is your it-kamasutra?" },
+    { id: 2, message: "Yo" },
     { id: 3, message: "Yo" },
     { id: 4, message: "Yo" },
-    { id: 5, message: "Yo" },
   ],
 };
 
@@ -40,7 +40,7 @@ export const dialogsReducer = (
   switch (action.type) {
     case SEND_MESSAGE:
       let message = {
-        id: 6,
+        id: state.messages.length,
         message: action.newMessageText,
       };
       return {
