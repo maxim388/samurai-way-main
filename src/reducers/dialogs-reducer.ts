@@ -1,4 +1,3 @@
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE_NEW_MESSAGE_TEXT";
 const SEND_MESSAGE = "SEND_MESSAGE";
 
 export type DialogDataType = {
@@ -14,7 +13,6 @@ export type MessagesDataType = {
 export type DialogsPageType = {
   dialogs: Array<DialogDataType>;
   messages: Array<MessagesDataType>;
-  newMessageText: string;
 };
 
 const initialState = {
@@ -33,7 +31,6 @@ const initialState = {
     { id: 4, message: "Yo" },
     { id: 5, message: "Yo" },
   ],
-  newMessageText: "",
 };
 
 export const dialogsReducer = (
@@ -41,42 +38,24 @@ export const dialogsReducer = (
   action: ActionTypes
 ): DialogsPageType => {
   switch (action.type) {
-    case UPDATE_NEW_MESSAGE_TEXT:
-      if (action.newMessageText) {
-        return {
-          ...state,
-          newMessageText: action.newMessageText,
-        };
-      } else {
-        return state;
-      }
     case SEND_MESSAGE:
       let message = {
         id: 6,
-        message: state.newMessageText,
+        message: action.newMessageText,
       };
       return {
         ...state,
         messages: [...state.messages, message],
-        newMessageText: "",
       };
     default:
       return state;
   }
 };
-type ActionTypes =
-  | ReturnType<typeof updateNewMessageTextAC>
-  | ReturnType<typeof sendMessageAC>;
+type ActionTypes = ReturnType<typeof sendMessageAC>;
 
-export const updateNewMessageTextAC = (newMessageText: string) => {
-  return {
-    type: UPDATE_NEW_MESSAGE_TEXT,
-    newMessageText,
-  } as const;
-};
-
-export const sendMessageAC = () => {
+export const sendMessageAC = (newMessageText: string) => {
   return {
     type: SEND_MESSAGE,
+    newMessageText,
   } as const;
 };
