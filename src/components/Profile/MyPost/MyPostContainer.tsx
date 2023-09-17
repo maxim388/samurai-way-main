@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { PostDataType, addPostAC } from "../../../reducers/profile-reducer";
-import { StateType } from "../../../redux/redux-store";
+import { AppRootStateType } from "../../../redux/redux-store";
 import { MyPost } from "./MyPost";
 import { Dispatch } from "redux";
 
@@ -15,7 +15,7 @@ type MapDispatchToPropsType = {
 export type MyPostContainerPropsType = MapStateToPropsType &
   MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStateToPropsType => {
+const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
     posts: state.profilePage.posts,
   };

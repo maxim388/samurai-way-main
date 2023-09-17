@@ -4,9 +4,10 @@ import s from "./Header.module.css";
 export type HeaderPropsType = {
   isAuth: boolean;
   login: string | null;
+  logout: () => Function
 };
 
-export const Header: React.FC<HeaderPropsType> = ({ isAuth, login }) => {
+export const Header: React.FC<HeaderPropsType> = ({ isAuth, login, logout }) => {
   return (
     <header className={s.header}>
       <img
@@ -16,7 +17,13 @@ export const Header: React.FC<HeaderPropsType> = ({ isAuth, login }) => {
         }
       />
       <div className={s.loginBlock}>
-        {isAuth ? login : <NavLink to={"/login"}>Login</NavLink>}
+        {isAuth ? (
+          <div>
+            {login} -- <button onClick={logout}>Logout</button>
+          </div>
+        ) : (
+          <NavLink to={"/login"}>Login</NavLink>
+        )}
       </div>
     </header>
   );

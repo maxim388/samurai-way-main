@@ -22,6 +22,9 @@ type profileAPIType = {
 
 type authAPIType = {
   authMe: () => Promise<any>;
+  login: (email: string, password: string, rememberMe: boolean) => Promise<any>;
+  logout: () => Promise<any>;
+  getCaptcha: () => Promise<any>;
 };
 
 export const usersAPI: usersAPIType = {
@@ -53,5 +56,14 @@ export const profileAPI: profileAPIType = {
 export const authAPI: authAPIType = {
   authMe() {
     return instance.get(`auth/me`);
+  },
+  login(email: string, password: string, rememberMe: boolean = false) {
+    return instance.post(`auth/login`, { email, password, rememberMe });
+  },
+  logout() {
+    return instance.delete(`auth/login`);
+  },
+  getCaptcha() {
+    return instance.get(`security/get-captcha-url`);
   },
 };

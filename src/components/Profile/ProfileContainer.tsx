@@ -3,12 +3,12 @@ import { Profile } from "./Profile";
 import { connect } from "react-redux";
 import {
   UserProfileType,
-  getStatusThunkCreator,
-  getUserProfileThunkCreator,
+  getStatusTC,
+  getUserProfileTC,
   setUserProfileAC,
-  updateStatusThunkCreator,
+  updateStatusTC,
 } from "../../reducers/profile-reducer";
-import { StateType } from "../../redux/redux-store";
+import { AppRootStateType } from "../../redux/redux-store";
 import { compose } from "redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { withAuthRedirect } from "../../HOC/withAuthRedirect";
@@ -39,7 +39,7 @@ export class ProfileAPIContainer extends React.Component<PropsType> {
     if (this.props.match.params.userId) {
       userId = Number(this.props.match.params.userId);
     } else {
-      userId = 29750;
+      userId = 29750; //fix place
     }
     this.props.getUserProfileTC(userId);
     this.props.getStatusTC(userId);
@@ -57,7 +57,7 @@ export class ProfileAPIContainer extends React.Component<PropsType> {
   }
 }
 
-const mapStateToProps = (state: StateType): MapStateToPropsType => {
+const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
     profile: state.profilePage.profile,
     status: state.profilePage.status,
@@ -66,9 +66,9 @@ const mapStateToProps = (state: StateType): MapStateToPropsType => {
 
 const mapDispatchToProps: MapDispatchToPropsType = {
   setUserProfile: setUserProfileAC,
-  getUserProfileTC: getUserProfileThunkCreator,
-  getStatusTC: getStatusThunkCreator,
-  updateStatusTC: updateStatusThunkCreator,
+  getUserProfileTC: getUserProfileTC,
+  getStatusTC: getStatusTC,
+  updateStatusTC: updateStatusTC,
 };
 
 export const ProfileContainer = compose<React.ComponentType>(

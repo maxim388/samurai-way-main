@@ -4,7 +4,7 @@ import {
   MessagesDataType,
   sendMessageAC,
 } from "../../reducers/dialogs-reducer";
-import { StateType } from "../../redux/redux-store";
+import { AppRootStateType } from "../../redux/redux-store";
 import { Dialogs } from "./Dialogs";
 import { Dispatch, compose } from "redux";
 import { withAuthRedirect } from "../../HOC/withAuthRedirect";
@@ -20,7 +20,7 @@ type MapDispatchToPropsType = {
 
 export type DialogsPropsType = MapStatePropsType & MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStatePropsType => {
+const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
   return {
     dialogs: state.dialogsPage.dialogs,
     messages: state.dialogsPage.messages,

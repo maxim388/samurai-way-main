@@ -1,13 +1,13 @@
 import { connect } from "react-redux";
-import { StateType } from "../../redux/redux-store";
+import { AppRootStateType } from "../../redux/redux-store";
 import {
   UsersPageType,
   followAC,
-  followThunkCreator,
-  getUsersThunkCreator,
+  followTC,
+  getUsersTC,
   setCurrentPageAC,
   unfollowAC,
-  unfollowThunkCreator,
+  unfollowTC,
 } from "../../reducers/users-reducer";
 import React from "react";
 import { Users } from "./Users";
@@ -28,7 +28,7 @@ type MapDispatchToPropsType = {
 
 type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStateToPropsType => {
+const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
@@ -43,9 +43,9 @@ const mapDispatchToProps: MapDispatchToPropsType = {
   followSuccess: followAC,
   unfollowSuccess: unfollowAC,
   setCurrentPage: setCurrentPageAC,
-  getUsers: getUsersThunkCreator,
-  unfollowTC: unfollowThunkCreator,
-  followTC: followThunkCreator,
+  getUsers: getUsersTC,
+  unfollowTC: unfollowTC,
+  followTC: followTC,
 };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {

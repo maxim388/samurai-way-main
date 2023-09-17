@@ -35,7 +35,7 @@ const initialState = {
 
 export const dialogsReducer = (
   state: DialogsPageType = initialState,
-  action: ActionTypes
+  action: DialogsActionTypes
 ): DialogsPageType => {
   switch (action.type) {
     case SEND_MESSAGE:
@@ -51,7 +51,8 @@ export const dialogsReducer = (
       return state;
   }
 };
-type ActionTypes = ReturnType<typeof sendMessageAC>;
+
+export type DialogsActionTypes = ReturnType<typeof sendMessageAC>;
 
 export const sendMessageAC = (newMessageText: string) => {
   return {
