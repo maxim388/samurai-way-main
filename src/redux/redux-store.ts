@@ -11,12 +11,14 @@ import { UsersActionTypes, usersReducer } from "../reducers/users-reducer";
 import { AuthActionTypes, authReducer } from "../reducers/auth-reducer";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { reducer as formReduser } from "redux-form";
+import { InitializeActionTypes, appReducer } from "../reducers/app-reducer";
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   usersPage: usersReducer,
   auth: authReducer,
+  app: appReducer,
   form: formReduser,
 });
 
@@ -29,7 +31,8 @@ export type AppActionsType =
   | ProfileActionTypes
   | DialogsActionTypes
   | UsersActionTypes
-  | AuthActionTypes;
+  | AuthActionTypes
+  | InitializeActionTypes;
 
 export type AppDispatch = ThunkDispatch<
   AppRootStateType,

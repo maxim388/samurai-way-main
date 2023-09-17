@@ -41,10 +41,14 @@ export class ProfileAPIContainer extends React.Component<PropsType> {
     if (this.props.match.params.userId) {
       userId = Number(this.props.match.params.userId);
     } else {
-      userId = this.props.autorizedUserId; //fix
+      if (this.props.autorizedUserId) {
+        userId = this.props.autorizedUserId;
+      } else {
+        this.props.history.push("/login");//fix
+      }
     }
-    this.props.getUserProfileTC(userId);
-    this.props.getStatusTC(userId);
+    this.props.getUserProfileTC(userId); //fix
+    this.props.getStatusTC(userId); //fix
   }
 
   render() {
@@ -63,7 +67,7 @@ const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     autorizedUserId: state.auth.id,
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
   };
 };
 

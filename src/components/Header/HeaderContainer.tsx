@@ -11,7 +11,7 @@ type MapStateToPropsType = {
   login: string | null;
 };
 type MapDispatchToPropsType = {
-  auth: () => Function;
+  // auth: () => Function;
   logout: () => Function;
 };
 
@@ -24,13 +24,13 @@ const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   };
 };
 const mapDispatchToProps: MapDispatchToPropsType = {
-  auth: authUserTC,
+  // auth: authUserTC,
   logout: logoutTC,
 };
 class HeaderAPIContainer extends React.Component<HeaderContainerPropsType> {
-  componentDidMount() {
-    this.props.auth();
-  }
+  // componentDidMount() {
+  //   this.props.auth();
+  // }
   render() {
     return <Header {...this.props} />;
   }
