@@ -37,7 +37,7 @@ export const initializedSuccessAC = () => {
 
 export const initializedSuccessTC = (): AppThunkType => {
   return async (dispatch) => {
-    await dispatch(authUserTC());
+    await dispatch(authUserTC()); //???
     dispatch(initializedSuccessAC());
   };
 };

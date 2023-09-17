@@ -44,11 +44,12 @@ export class ProfileAPIContainer extends React.Component<PropsType> {
       if (this.props.autorizedUserId) {
         userId = this.props.autorizedUserId;
       } else {
-        this.props.history.push("/login");//fix
+        this.props.history.push("/login");
+        return;
       }
     }
-    this.props.getUserProfileTC(userId); //fix
-    this.props.getStatusTC(userId); //fix
+    this.props.getUserProfileTC(userId); //? зачем?
+    this.props.getStatusTC(userId); //? зачем?
   }
 
   render() {

@@ -18,7 +18,7 @@ export type UserType = {
   followed: boolean;
   id: number;
   name: string;
-  photos: { small: any; large: any };
+  photos: { small: string | null; large: string | null };
   status: any;
   uniqueUrlName: null;
 };
@@ -155,36 +155,43 @@ export const toggleFollowingProgressAC = (isProgress: boolean) => {
   } as const;
 };
 
-export const getUsersTC = (
-  page: number,
-  pageSize: number
-): AppThunkType => {
-  return (dispatch) => {
+export const getUsersTC = (page: number, pageSize: number): AppThunkType => {
+  return async (dispatch) => {
     dispatch(toggleIsFetchingAC(true));
-    usersAPI.getUsers(page, pageSize).then((res) => {
-      dispatch(toggleIsFetchingAC(false));
+    try {
+      const res = await usersAPI.getUsers(page, pageSize);
       dispatch(setUsersAC(res.items));
       dispatch(setTotalUsersCountAC(res.totalCount));
-    });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(toggleIsFetchingAC(false));
+    }
   };
 };
 
 export const followTC = (userId: number): AppThunkType => {
-  return (dispatch) => {
-    usersAPI.followUser(userId).then((res) => {
-      if (!res.data.resultCode) {
+  return async (dispatch) => {
+    try {
+      const res = await usersAPI.followUser(userId);
+      if (res.resultCode === 0) {
         dispatch(followAC(userId));
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
 export const unfollowTC = (userId: number): AppThunkType => {
-  return (dispatch) => {
-    usersAPI.unfollowUser(userId).then((res) => {
-      if (!res.data.resultCode) {
+  return async (dispatch) => {
+    try {
+      const res = await usersAPI.unfollowUser(userId);
+      if (res.resultCode === 0) {
         dispatch(unfollowAC(userId));
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

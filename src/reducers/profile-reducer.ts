@@ -61,8 +61,7 @@ export const profileReducer = (
         message: action.newPostText,
         likesCount: 0,
       };
-      return { ...state, posts: [...state.posts, newPost], 
-      };
+      return { ...state, posts: [...state.posts, newPost] };
     case SET_USER_PROFILE:
       return { ...state, profile: action.profile };
     case SET_STATUS:
@@ -99,27 +98,37 @@ export const setStatusAC = (status: string) => {
 };
 
 export const getUserProfileTC = (userId: number): AppThunkType => {
-  return (dispatch) => {
-    profileAPI.getProfile(userId).then((res) => {
-      dispatch(setUserProfileAC(res.data));
-    });
+  return async (dispatch) => {
+    try {
+      const res = await profileAPI.getProfile(userId);
+      dispatch(setUserProfileAC(res));
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
 export const getStatusTC = (userId: number): AppThunkType => {
-  return (dispatch) => {
-    profileAPI.getStatus(userId).then((res) => {
+  return async (dispatch) => {
+    try {
+      const res = await profileAPI.getStatus(userId);
+      debugger;
       if (res.status === 200) {
         dispatch(setStatusAC(res.data));
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
 export const updateStatusTC = (status: string): AppThunkType => {
-  return (dispatch) => {
-    profileAPI.updateStatus(status).then((res) => {
+  return async (dispatch) => {
+    try {
+      await profileAPI.updateStatus(status);
       dispatch(setStatusAC(status));
-    });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

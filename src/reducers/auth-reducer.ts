@@ -73,7 +73,9 @@ export const authUserTC = (): AppThunkType => {
         const { id, email, login } = res.data.data;
         dispatch(setAuthUserDataAC(id, email, login, true));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
@@ -93,10 +95,14 @@ export const loginTC = (
           dispatch(captchaTC());
           break;
         default:
-          const messageError = res.data.messages.length ? res.data.messages[0] : "Some Error"
+          const messageError = res.data.messages.length
+            ? res.data.messages[0]
+            : "Some Error";
           dispatch(stopSubmit("login", { _error: messageError }));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
@@ -107,7 +113,9 @@ export const logoutTC = (): AppThunkType => {
       if (!res.data.resultCode) {
         dispatch(setAuthUserDataAC(null, null, null, false));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
@@ -116,6 +124,8 @@ export const captchaTC = (): AppThunkType => {
     try {
       const res = await authAPI.getCaptcha();
       dispatch(setCaptchaAC(res.url));
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
