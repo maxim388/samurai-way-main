@@ -7,6 +7,7 @@ import { loginTC } from "../../reducers/auth-reducer";
 import { Redirect } from "react-router-dom";
 import { AppRootStateType } from "../../redux/redux-store";
 import { Captcha } from "./Captcha";
+import style from "./../common/FormsControls.module.css";
 
 type FormDataType = {
   email: string;
@@ -46,6 +47,9 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
         <Field type="checkbox" component={Input} name={"rememberMe"} />
         rememver me
       </div>
+      {props.error && (
+        <div className={style.formSummaryError}>{props.error}</div>
+      )}
       <div>
         <button>Login</button>
       </div>

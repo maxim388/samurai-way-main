@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/api";
 import { AppThunkType } from "../redux/redux-store";
 
@@ -84,11 +85,16 @@ export const loginTC = (
   return async (dispatch) => {
     try {
       const res = await authAPI.login(email, password, rememberMe);
-      if (!res.data.resultCode) {
-        dispatch(authUserTC());
-      }
-      if (res.data.resultCode === 10) {
-        dispatch(captchaTC());
+      switch (res.data.resultCode) {
+        case 0:
+          dispatch(authUserTC());
+          break;
+        case 10:
+          dispatch(captchaTC());
+          break;
+        default:
+          const messageError = res.data.messages.length ? res.data.messages[0] : "Some Error"
+          dispatch(stopSubmit("login", { _error: messageError })); //fix
       }
     } catch (e) {}
   };
