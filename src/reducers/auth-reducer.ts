@@ -94,7 +94,7 @@ export const loginTC = (
           break;
         default:
           const messageError = res.data.messages.length ? res.data.messages[0] : "Some Error"
-          dispatch(stopSubmit("login", { _error: messageError })); //fix
+          dispatch(stopSubmit("login", { _error: messageError }));
       }
     } catch (e) {}
   };

@@ -14,6 +14,14 @@ import { Users } from "./Users";
 import { compose } from "redux";
 import { Preloader } from "../common/Preloader";
 import { withAuthRedirect } from "../../HOC/withAuthRedirect";
+import {
+  getCurrentPage,
+  getFollowingInProgress,
+  getIsFetching,
+  getPageSize,
+  getTotalUsersCount,
+  getUsers,
+} from "../../reducers/users-selectors";
 
 type MapStateToPropsType = UsersPageType;
 
@@ -30,15 +38,16 @@ type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
 const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    followingInProgress: state.usersPage.followingInProgress,
+    users: getUsers(state),
+    pageSize: getPageSize(state),
+    totalUsersCount: getTotalUsersCount(state),
+    currentPage: getCurrentPage(state),
+    isFetching: getIsFetching(state),
+    followingInProgress: getFollowingInProgress(state),
   };
 };
-// connect сам оборачивает dispatch'ем каждле свойство объекта
+
+// connect сам оборачивает dispatch'ем каждое свойство объекта
 const mapDispatchToProps: MapDispatchToPropsType = {
   followSuccess: followAC,
   unfollowSuccess: unfollowAC,
@@ -88,6 +97,6 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
 }
 
 export const UsersContainer = compose<React.ComponentType>(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps)
   // withAuthRedirect
 )(UsersAPIComponent);

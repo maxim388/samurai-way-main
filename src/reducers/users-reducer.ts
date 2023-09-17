@@ -156,12 +156,12 @@ export const toggleFollowingProgressAC = (isProgress: boolean) => {
 };
 
 export const getUsersTC = (
-  currentPage: number,
+  page: number,
   pageSize: number
 ): AppThunkType => {
   return (dispatch) => {
     dispatch(toggleIsFetchingAC(true));
-    usersAPI.getUsers(currentPage, pageSize).then((res) => {
+    usersAPI.getUsers(page, pageSize).then((res) => {
       dispatch(toggleIsFetchingAC(false));
       dispatch(setUsersAC(res.items));
       dispatch(setTotalUsersCountAC(res.totalCount));
