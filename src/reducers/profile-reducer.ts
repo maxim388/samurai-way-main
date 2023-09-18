@@ -112,7 +112,6 @@ export const getStatusTC = (userId: number): AppThunkType => {
   return async (dispatch) => {
     try {
       const res = await profileAPI.getStatus(userId);
-      debugger;
       if (res.status === 200) {
         dispatch(setStatusAC(res.data));
       }

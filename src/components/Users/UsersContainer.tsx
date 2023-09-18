@@ -20,7 +20,7 @@ import {
   getIsFetching,
   getPageSize,
   getTotalUsersCount,
-  getUsers,
+  getUsersSelector,
 } from "../../reducers/users-selectors";
 
 type MapStateToPropsType = UsersPageType;
@@ -38,7 +38,7 @@ type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
 const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
-    users: getUsers(state),
+    users: getUsersSelector(state),
     pageSize: getPageSize(state),
     totalUsersCount: getTotalUsersCount(state),
     currentPage: getCurrentPage(state),
