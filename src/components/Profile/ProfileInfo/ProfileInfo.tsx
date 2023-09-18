@@ -2,6 +2,7 @@ import { UserProfileType } from "../../../reducers/profile-reducer";
 import { Preloader } from "../../common/Preloader";
 import s from "./ProfileInfo.module.css";
 import { ProfileStatus } from "./ProfileStatus";
+import { ProfileStatusWithHooks } from "./ProfileStatusWithHooks";
 
 type ProfileInfoPropsType = {
   profile: null | UserProfileType;
@@ -22,7 +23,11 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
         <div></div>
         <div className={s.desctiptionBlock}>
           <img src={profile?.photos.large} alt="ava" />
-          <ProfileStatus status={status} updateStatusTC={updateStatusTC} />
+          <ProfileStatusWithHooks
+            status={status}
+            updateStatusTC={updateStatusTC}
+          />
+          {/* <ProfileStatus status={status} updateStatusTC={updateStatusTC} /> */}
         </div>
       </div>
     );
