@@ -1,35 +1,26 @@
-import s from "./Users.module.css";
-import UserPhoto from "../../assets/users_default_img.jpg";
-import { FC } from "react";
-import { UserType } from "../../reducers/users-reducer";
-import { NavLink } from "react-router-dom";
-import { Paginator } from "./Paginator/Paginator";
 
-type UsersPropsType = {
-  pageSize: number;
+
+import { FC } from "react";
+import { UserType } from "../../../reducers/users-reducer";
+import { Ava } from "./Ava";
+
+type UserPropsType = {
   users: UserType[];
-  currentPage: number;
   followingInProgress: boolean;
-  totalUsersCount: number;
-  onPageChanged: (pageNumber: number) => void;
   toggleFollowTC: (userId: number, follow: boolean) => Function;
 };
 
-export const Users: FC<UsersPropsType> = ({
-  pageSize,
+export const Users: FC<UserPropsType> = ({
   users,
-  currentPage,
-  onPageChanged,
   followingInProgress,
   toggleFollowTC,
-  totalUsersCount,
 }) => {
-
   const usersMaping = users.map((u) => {
     return (
       <div key={u.id}>
         <span>
-          <div>
+          <Ava user={u}/>
+          {/* <div>
             <NavLink to={`/profile/${u.id}`}>
               <img
                 alt="ava"
@@ -37,7 +28,7 @@ export const Users: FC<UsersPropsType> = ({
                 className={s.ava}
               />
             </NavLink>
-          </div>
+          </div> */}
           <div>
             {u.followed ? (
               <button
@@ -73,12 +64,6 @@ export const Users: FC<UsersPropsType> = ({
 
   return (
     <div>
-      <Paginator
-        onPageChanged={onPageChanged}
-        currentPage={currentPage}
-        totalUsersCount={totalUsersCount}
-        pageSize={pageSize}
-      />
       <div>{usersMaping}</div>
     </div>
   );

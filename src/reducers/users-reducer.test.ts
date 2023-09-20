@@ -1,12 +1,12 @@
 import {
   UsersPageType,
-  followAC,
+  toggleFollowAC,
   setCurrentPageAC,
   setTotalUsersCountAC,
   setUsersAC,
   toggleFollowingProgressAC,
   toggleIsFetchingAC,
-  unfollowAC,
+  // unfollowAC,
   usersReducer,
 } from "./users-reducer";
 
@@ -41,7 +41,7 @@ beforeEach(() => {
 });
 
 test("correct user should be update following | case FOLLOW", () => {
-  const action = followAC(1);
+  const action = toggleFollowAC(1, true);
   const endState = usersReducer(startState, action);
 
   expect(endState.users).not.toBe(startState.users);
@@ -51,7 +51,7 @@ test("correct user should be update following | case FOLLOW", () => {
 });
 
 test("correct user should be update unfollowing | case UNFOLLOW", () => {
-  const action = unfollowAC(2);
+  const action = toggleFollowAC(2, false);
   const endState = usersReducer(startState, action);
 
   expect(endState.users).not.toBe(startState.users);

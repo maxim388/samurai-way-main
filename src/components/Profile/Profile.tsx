@@ -1,6 +1,8 @@
 import { UserProfileType } from "../../reducers/profile-reducer";
 import { MyPostContainer } from "./MyPost/MyPostContainer";
 import { ProfileInfo } from "./ProfileInfo/ProfileInfo";
+import {FC} from "react";
+
 
 type ProfilePropsType = {
   profile: null | UserProfileType;
@@ -8,7 +10,7 @@ type ProfilePropsType = {
   updateStatusTC: (status: string) => Function;
 };
 
-export const Profile: React.FC<ProfilePropsType> = (props) => {
+export const Profile: FC<ProfilePropsType> = (props) => {
   return (
     <div>
       <ProfileInfo {...props} />

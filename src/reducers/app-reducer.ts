@@ -1,7 +1,7 @@
 import { AppThunkType } from "../redux/redux-store";
 import { authUserTC } from "./auth-reducer";
 
-const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS";
+const INITIALIZED_SUCCESS = "app/INITIALIZED_SUCCESS";
 
 type InitializedType = {
   initialized: boolean;
@@ -37,7 +37,11 @@ export const initializedSuccessAC = () => {
 
 export const initializedSuccessTC = (): AppThunkType => {
   return async (dispatch) => {
-    await dispatch(authUserTC()); //???
-    dispatch(initializedSuccessAC());
+    try {
+      const promise = await dispatch(authUserTC()); //fix
+      dispatch(initializedSuccessAC());
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

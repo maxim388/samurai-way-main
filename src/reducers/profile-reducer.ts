@@ -1,10 +1,10 @@
 import { profileAPI } from "../api/api";
 import { AppThunkType } from "../redux/redux-store";
 
-const ADD_POST = "ADD_POST";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_STATUS = "SET_STATUS";
-const DELETE_POST = "DELETE_POST";
+const ADD_POST = "profile/ADD_POST";
+const SET_USER_PROFILE = "profile/SET_USER_PROFILE";
+const SET_STATUS = "profile/SET_STATUS";
+const DELETE_POST = "profile/DELETE_POST";
 
 export type PostDataType = {
   id: number;

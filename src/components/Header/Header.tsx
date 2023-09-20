@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import s from "./Header.module.css";
+import { FC } from "react";
 
 export type HeaderPropsType = {
   isAuth: boolean;
@@ -7,7 +8,7 @@ export type HeaderPropsType = {
   logout: () => Function
 };
 
-export const Header: React.FC<HeaderPropsType> = ({ isAuth, login, logout }) => {
+export const Header: FC<HeaderPropsType> = ({ isAuth, login, logout }) => {
   return (
     <header className={s.header}>
       <img

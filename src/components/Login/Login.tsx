@@ -1,13 +1,13 @@
-import React from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
-import { Input } from "../common/FormsControls";
 import { required } from "../../utils/validators/validators";
 import { connect } from "react-redux";
 import { loginTC } from "../../reducers/auth-reducer";
 import { Redirect } from "react-router-dom";
 import { AppRootStateType } from "../../redux/redux-store";
 import { Captcha } from "./Captcha";
-import style from "./../common/FormsControls.module.css";
+import style from "./../common/FormsControls/FormsControls.module.css";
+import { Input, createField } from "../common/FormsControls/FormsControls";
+import { FC } from "react";
 
 type FormDataType = {
   email: string;
@@ -23,30 +23,13 @@ type MapDispatchToPropsType = {
 };
 type LoginPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+const LoginForm: FC<InjectedFormProps<FormDataType>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
-      <div>
-        <Field
-          placeholder={"email"}
-          component={Input}
-          name={"email"}
-          validate={[required]}
-        />
-      </div>
-      <div>
-        <Field
-          placeholder={"password"}
-          component={Input}
-          name={"password"}
-          type={"password"}
-          validate={[required]}
-        />
-      </div>
-      <div>
-        <Field type="checkbox" component={Input} name={"rememberMe"} />
-        rememver me
-      </div>
+      {createField("email", "email", [required], Input)}
+      {createField("password", "password", [required], Input, {type: "password"})}
+      {createField("checkbox", "rememberMe", [], Input, {}, "remember me")}
+
       {props.error && (
         <div className={style.formSummaryError}>{props.error}</div>
       )}
@@ -61,21 +44,21 @@ const LoginReduxForm = reduxForm<FormDataType>({
   form: "login",
 })(LoginForm);
 
-export const Login: React.FC<LoginPropsType> = (props) => {
+export const Login: FC<LoginPropsType> = ({ login, captcha, isAuth }) => {
   const onSubmit = (formData: FormDataType) => {
-    props.login(formData.email, formData.password, formData.rememberMe);
+    login(formData.email, formData.password, formData.rememberMe);
   };
-  if (props.isAuth) {
+  if (isAuth) {
     return <Redirect to={"/profile"} />;
   }
   return (
     <div>
       <h1>LOGIN</h1>
 
-      {!props.captcha ? (
+      {!captcha ? (
         <LoginReduxForm onSubmit={onSubmit} />
       ) : (
-        <Captcha captcha={props.captcha} />
+        <Captcha captcha={captcha} />
       )}
     </div>
   );

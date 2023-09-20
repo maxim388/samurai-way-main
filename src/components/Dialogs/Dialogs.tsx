@@ -3,15 +3,16 @@ import { Mesassage } from "./Message/Message";
 import { DialogItem } from "./DialogItem/DialogItem";
 import { DialogsPropsType } from "./DialogsContainer";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
-import { Textarea } from "../common/FormsControls";
 import { maxLengthCreator, required } from "../../utils/validators/validators";
+import { Textarea } from "../common/FormsControls/FormsControls";
+import { FC } from "react";
 
 type FormDataType = {
   newMessageText: string;
 };
 const maxLength50 = maxLengthCreator(50);
 
-const AddMeessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+const AddMeessageForm: FC<InjectedFormProps<FormDataType>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
@@ -28,25 +29,6 @@ const AddMeessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     </form>
   );
 };
-
-
-// const AddNewPostForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-//   return (
-//     <form onSubmit={props.handleSubmit}>
-//       <div>
-//         <Field
-//           component={Textarea}
-//           name={"newPostText"}
-//           placeholder={"Post message"}
-//           validate={[required, maxLength10]}
-//         />
-//       </div>
-//       <div>
-//         <button>Add post</button>
-//       </div>
-//     </form>
-//   );
-// };
 
 export const Dialogs = (props: DialogsPropsType) => {
   const gialogsElements = props.dialogs.map((d) => {

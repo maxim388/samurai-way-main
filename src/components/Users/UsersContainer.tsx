@@ -2,18 +2,14 @@ import { connect } from "react-redux";
 import { AppRootStateType } from "../../redux/redux-store";
 import {
   UsersPageType,
-  followAC,
-  followTC,
   getUsersTC,
   setCurrentPageAC,
-  unfollowAC,
-  unfollowTC,
+  toggleFollowTC,
 } from "../../reducers/users-reducer";
 import React from "react";
 import { Users } from "./Users";
 import { compose } from "redux";
 import { Preloader } from "../common/Preloader";
-import { withAuthRedirect } from "../../HOC/withAuthRedirect";
 import {
   getCurrentPage,
   getFollowingInProgress,
@@ -26,12 +22,9 @@ import {
 type MapStateToPropsType = UsersPageType;
 
 type MapDispatchToPropsType = {
-  followSuccess: (userId: number) => void;
-  unfollowSuccess: (userId: number) => void;
   setCurrentPage: (currentPage: number) => void;
   getUsers: (currentPage: number, pageSize: number) => void;
-  unfollowTC: (userId: number) => Function;
-  followTC: (userId: number) => Function;
+  toggleFollowTC: (userId: number, follow: boolean) => Function;
 };
 
 type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
@@ -49,12 +42,9 @@ const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
 
 // connect сам оборачивает dispatch'ем каждое свойство объекта
 const mapDispatchToProps: MapDispatchToPropsType = {
-  followSuccess: followAC,
-  unfollowSuccess: unfollowAC,
   setCurrentPage: setCurrentPageAC,
   getUsers: getUsersTC,
-  unfollowTC: unfollowTC,
-  followTC: followTC,
+  toggleFollowTC: toggleFollowTC,
 };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
@@ -68,27 +58,19 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
   };
 
   render() {
-    let pages = [];
-    let pagesCount = Math.ceil(
-      this.props.totalUsersCount / this.props.pageSize
-    );
-
-    for (let i = 1; i <= pagesCount; i++) {
-      pages.push(i);
-    }
     return (
       <>
         {this.props.isFetching ? (
           <Preloader />
         ) : (
           <Users
-            pages={pages}
+            totalUsersCount={this.props.totalUsersCount}
+            pageSize={this.props.pageSize}
             currentPage={this.props.currentPage}
             onPageChanged={this.onPageChanged}
             users={this.props.users}
             followingInProgress={this.props.followingInProgress}
-            unfollowTC={this.props.unfollowTC}
-            followTC={this.props.followTC}
+            toggleFollowTC={this.props.toggleFollowTC}
           />
         )}
       </>
@@ -98,5 +80,4 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
 
 export const UsersContainer = compose<React.ComponentType>(
   connect(mapStateToProps, mapDispatchToProps)
-  // withAuthRedirect
 )(UsersAPIComponent);
