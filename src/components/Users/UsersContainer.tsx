@@ -1,19 +1,27 @@
 import { connect } from "react-redux";
-import { StateType } from "../../redux/redux-store";
+import { AppRootStateType } from "../../redux/redux-store";
 import {
   UsersPageType,
   followAC,
-  followThunkCreator,
-  getUsersThunkCreator,
+  followTC,
+  getUsersTC,
   setCurrentPageAC,
   unfollowAC,
-  unfollowThunkCreator,
+  unfollowTC,
 } from "../../reducers/users-reducer";
 import React from "react";
 import { Users } from "./Users";
 import { compose } from "redux";
 import { Preloader } from "../common/Preloader";
 import { withAuthRedirect } from "../../HOC/withAuthRedirect";
+import {
+  getCurrentPage,
+  getFollowingInProgress,
+  getIsFetching,
+  getPageSize,
+  getTotalUsersCount,
+  getUsersSelector,
+} from "../../reducers/users-selectors";
 
 type MapStateToPropsType = UsersPageType;
 
@@ -28,24 +36,25 @@ type MapDispatchToPropsType = {
 
 type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStateToPropsType => {
+const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    followingInProgress: state.usersPage.followingInProgress,
+    users: getUsersSelector(state),
+    pageSize: getPageSize(state),
+    totalUsersCount: getTotalUsersCount(state),
+    currentPage: getCurrentPage(state),
+    isFetching: getIsFetching(state),
+    followingInProgress: getFollowingInProgress(state),
   };
 };
-// connect сам оборачивает dispatch'ем каждле свойство объекта
+
+// connect сам оборачивает dispatch'ем каждое свойство объекта
 const mapDispatchToProps: MapDispatchToPropsType = {
   followSuccess: followAC,
   unfollowSuccess: unfollowAC,
   setCurrentPage: setCurrentPageAC,
-  getUsers: getUsersThunkCreator,
-  unfollowTC: unfollowThunkCreator,
-  followTC: followThunkCreator,
+  getUsers: getUsersTC,
+  unfollowTC: unfollowTC,
+  followTC: followTC,
 };
 
 export class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
@@ -88,6 +97,6 @@ export class UsersAPIComponent extends React.Component<UsersContainerPropsType> 
 }
 
 export const UsersContainer = compose<React.ComponentType>(
-  connect(mapStateToProps, mapDispatchToProps),
-  withAuthRedirect
+  connect(mapStateToProps, mapDispatchToProps)
+  // withAuthRedirect
 )(UsersAPIComponent);

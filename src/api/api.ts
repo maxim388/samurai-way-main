@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { UserType } from "../reducers/users-reducer";
+import { UserProfileType } from "../reducers/profile-reducer";
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.0/",
@@ -8,50 +10,84 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-type usersAPIType = {
-  getUsers: (page: number, count: number) => Promise<any>;
-  followUser: (userId: number) => Promise<any>;
-  unfollowUser: (userId: number) => Promise<any>;
+type ResponseUsersType = {
+  items: UserType[];
+  totalCount: number;
+  error: null | string;
+};
+type ResponseFollowType<D = {}> = {
+  resultCode: number;
+  messages: [];
+  data: D;
 };
 
-type profileAPIType = {
-  getProfile: (userId: number) => Promise<any>;
-  getStatus: (userId: number) => Promise<any>;
-  updateStatus: (status: string) => Promise<any>;
+type UsersAPIType = {
+  getUsers: (page: number, count: number) => Promise<ResponseUsersType>;
+  followUser: (userId: number) => Promise<ResponseFollowType>;
+  unfollowUser: (userId: number) => Promise<ResponseFollowType>;
 };
 
-type authAPIType = {
+type ResponseProfileType = UserProfileType;
+
+type ProfileAPIType = {
+  getProfile: (userId: number) => Promise<UserProfileType>;
+  getStatus: (userId: number) => Promise<AxiosResponse>;
+  updateStatus: (status: string) => Promise<AxiosResponse>;
+};
+type ResponseAuthType = {
+
+}
+
+type AuthAPIType = {
   authMe: () => Promise<any>;
+  login: (email: string, password: string, rememberMe: boolean) => Promise<any>;
+  logout: () => Promise<any>;
+  getCaptcha: () => Promise<any>;
 };
 
-export const usersAPI: usersAPIType = {
+export const usersAPI: UsersAPIType = {
   getUsers(page: number = 1, count: number = 10) {
     return instance
       .get(`users?page=${page}&count=${count}`)
-      .then((res) => res.data);
+      .then<ResponseUsersType>((res) => res.data);
   },
   followUser(userId: number) {
-    return instance.post(`follow/${userId}`);
+    return instance
+      .post(`follow/${userId}`)
+      .then<ResponseFollowType>((res) => res.data);
   },
   unfollowUser(userId: number) {
-    return instance.delete(`follow/${userId}`);
+    return instance
+      .delete(`follow/${userId}`)
+      .then<ResponseFollowType>((res) => res.data);
   },
 };
 
-export const profileAPI: profileAPIType = {
+export const profileAPI: ProfileAPIType = {
   getProfile(userId: number) {
-    return instance.get(`profile/${userId}`);
+    return instance
+      .get(`profile/${userId}`)
+      .then<ResponseProfileType>((res) => res.data);
   },
   getStatus(userId: number) {
-    return instance.get(`profile/status/${userId}`);
+    return instance.get<AxiosResponse>(`profile/status/${userId}`);
   },
   updateStatus(status: string) {
-    return instance.put(`profile/status`, { status: status });
+    return instance.put<AxiosResponse>(`profile/status`, { status: status });
   },
 };
 
-export const authAPI: authAPIType = {
+export const authAPI: AuthAPIType = {
   authMe() {
     return instance.get(`auth/me`);
+  },
+  login(email: string, password: string, rememberMe: boolean = false) {
+    return instance.post(`auth/login`, { email, password, rememberMe });
+  },
+  logout() {
+    return instance.delete(`auth/login`);
+  },
+  getCaptcha() {
+    return instance.get(`security/get-captcha-url`);
   },
 };

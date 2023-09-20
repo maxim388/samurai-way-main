@@ -2,33 +2,35 @@ import React from "react";
 import { Header } from "./Header";
 import { connect } from "react-redux";
 import {
-  authThunkCreator,
+  authUserTC, logoutTC,
 } from "../../reducers/auth-reducer";
-import { StateType } from "../../redux/redux-store";
+import { AppRootStateType } from "../../redux/redux-store";
 
 type MapStateToPropsType = {
   isAuth: boolean;
   login: string | null;
 };
 type MapDispatchToPropsType = {
-  authTC: () => Function;
+  // auth: () => Function;
+  logout: () => Function;
 };
 
 type HeaderContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
-const mapStateToProps = (state: StateType): MapStateToPropsType => {
+const mapStateToProps = (state: AppRootStateType): MapStateToPropsType => {
   return {
     isAuth: state.auth.isAuth,
     login: state.auth.login,
   };
 };
 const mapDispatchToProps: MapDispatchToPropsType = {
-  authTC: authThunkCreator,
+  // auth: authUserTC,
+  logout: logoutTC,
 };
 class HeaderAPIContainer extends React.Component<HeaderContainerPropsType> {
-  componentDidMount() {
-    this.props.authTC();
-  }
+  // componentDidMount() {
+  //   this.props.auth();
+  // }
   render() {
     return <Header {...this.props} />;
   }

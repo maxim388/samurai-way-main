@@ -2,6 +2,7 @@ import { UserProfileType } from "../../../reducers/profile-reducer";
 import { Preloader } from "../../common/Preloader";
 import s from "./ProfileInfo.module.css";
 import { ProfileStatus } from "./ProfileStatus";
+import { ProfileStatusWithHooks } from "./ProfileStatusWithHooks";
 
 type ProfileInfoPropsType = {
   profile: null | UserProfileType;
@@ -19,15 +20,14 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
   } else {
     return (
       <div>
-        <div>
-          {/* <img
-            src="https://s1.1zoom.ru/big0/234/Sea_Sky_Beach_Sunlounger_Sand_Rest_580068_1280x853.jpg"
-            alt="background"
-          /> */}
-        </div>
+        <div></div>
         <div className={s.desctiptionBlock}>
           <img src={profile?.photos.large} alt="ava" />
-          <ProfileStatus status={status} updateStatusTC={updateStatusTC} />
+          <ProfileStatusWithHooks
+            status={status}
+            updateStatusTC={updateStatusTC}
+          />
+          {/* <ProfileStatus status={status} updateStatusTC={updateStatusTC} /> */}
         </div>
       </div>
     );

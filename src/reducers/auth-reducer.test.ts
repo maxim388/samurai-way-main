@@ -8,11 +8,12 @@ beforeEach(() => {
     login: null,
     email: null,
     isAuth: false,
+    captcha: ""
   };
 });
 
 test("correct new user should be update auth | case SET_USER_DATA", () => {
-  const action = setAuthUserDataAC(2, "maxim.alenchikov@gmail", "maxim");
+  const action = setAuthUserDataAC(2, "maxim.alenchikov@gmail", "maxim", true);
   const endState = authReducer(startState, action);
 
   expect(endState).not.toBe(startState);

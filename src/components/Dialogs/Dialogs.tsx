@@ -1,11 +1,54 @@
 import s from "./Dialogs.module.css";
 import { Mesassage } from "./Message/Message";
 import { DialogItem } from "./DialogItem/DialogItem";
-import { ChangeEvent } from "react";
 import { DialogsPropsType } from "./DialogsContainer";
+import { Field, InjectedFormProps, reduxForm } from "redux-form";
+import { Textarea } from "../common/FormsControls";
+import { maxLengthCreator, required } from "../../utils/validators/validators";
+
+type FormDataType = {
+  newMessageText: string;
+};
+const maxLength50 = maxLengthCreator(50);
+
+const AddMeessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        <Field
+          component={Textarea}
+          name={"newMessageText"}
+          placeholder={"Enter your message"}
+          validate={[required, maxLength50]}
+        />
+      </div>
+      <div>
+        <button>Send</button>
+      </div>
+    </form>
+  );
+};
+
+
+// const AddNewPostForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+//   return (
+//     <form onSubmit={props.handleSubmit}>
+//       <div>
+//         <Field
+//           component={Textarea}
+//           name={"newPostText"}
+//           placeholder={"Post message"}
+//           validate={[required, maxLength10]}
+//         />
+//       </div>
+//       <div>
+//         <button>Add post</button>
+//       </div>
+//     </form>
+//   );
+// };
 
 export const Dialogs = (props: DialogsPropsType) => {
-
   const gialogsElements = props.dialogs.map((d) => {
     return <DialogItem key={d.id} name={d.name} id={d.id} />;
   });
@@ -13,13 +56,8 @@ export const Dialogs = (props: DialogsPropsType) => {
     return <Mesassage key={m.id} message={m.message} />;
   });
 
-  const onSendMesageClick = () => {
-    props.onSendMesageClick();
-  };
-
-  const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    let message = e.currentTarget.value;
-    props.onNewMessageChange(message);
+  const addNewMessage = (values: FormDataType) => {
+    props.onSendMesageClick(values.newMessageText);
   };
 
   return (
@@ -27,19 +65,12 @@ export const Dialogs = (props: DialogsPropsType) => {
       <div className={s.dialogsItems}>{gialogsElements}</div>
       <div className={s.messages}>
         <div> {messagesElements}</div>
-        <div>
-          <div>
-            <textarea
-              value={props.newMessageText}
-              onChange={(e) => onNewMessageChange(e)}
-              placeholder="Enter your message"
-            ></textarea>
-          </div>
-          <div>
-            <button onClick={onSendMesageClick}>Send</button>
-          </div>
-        </div>
+        <AddMeessageFormRedux onSubmit={addNewMessage} />
       </div>
     </div>
   );
 };
+
+const AddMeessageFormRedux = reduxForm<FormDataType>({
+  form: "dialogAddMessageForm",
+})(AddMeessageForm);

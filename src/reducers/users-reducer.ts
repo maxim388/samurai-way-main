@@ -1,5 +1,5 @@
-import { Dispatch } from "redux";
 import { usersAPI } from "../api/api";
+import { AppThunkType } from "../redux/redux-store";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -18,7 +18,7 @@ export type UserType = {
   followed: boolean;
   id: number;
   name: string;
-  photos: { small: any; large: any };
+  photos: { small: string | null; large: string | null };
   status: any;
   uniqueUrlName: null;
 };
@@ -43,7 +43,7 @@ let initialState = {
 
 export const usersReducer = (
   state: UsersPageType = initialState,
-  action: ActionTypes
+  action: UsersActionTypes
 ): UsersPageType => {
   switch (action.type) {
     case FOLLOW:
@@ -97,7 +97,7 @@ export const usersReducer = (
   }
 };
 
-type ActionTypes =
+export type UsersActionTypes =
   | ReturnType<typeof followAC>
   | ReturnType<typeof unfollowAC>
   | ReturnType<typeof setUsersAC>
@@ -155,33 +155,43 @@ export const toggleFollowingProgressAC = (isProgress: boolean) => {
   } as const;
 };
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-  return (dispatch: Dispatch) => {
+export const getUsersTC = (page: number, pageSize: number): AppThunkType => {
+  return async (dispatch) => {
     dispatch(toggleIsFetchingAC(true));
-    usersAPI.getUsers(currentPage, pageSize).then((res) => {
-      dispatch(toggleIsFetchingAC(false));
+    try {
+      const res = await usersAPI.getUsers(page, pageSize);
       dispatch(setUsersAC(res.items));
       dispatch(setTotalUsersCountAC(res.totalCount));
-    });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(toggleIsFetchingAC(false));
+    }
   };
 };
 
-export const followThunkCreator = (userId: number) => {
-  return (dispatch: Dispatch) => {
-    usersAPI.followUser(userId).then((res) => {
-      if (!res.data.resultCode) {
+export const followTC = (userId: number): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await usersAPI.followUser(userId);
+      if (res.resultCode === 0) {
         dispatch(followAC(userId));
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };
 
-export const unfollowThunkCreator = (userId: number) => {
-  return (dispatch: Dispatch) => {
-    usersAPI.unfollowUser(userId).then((res) => {
-      if (!res.data.resultCode) {
+export const unfollowTC = (userId: number): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await usersAPI.unfollowUser(userId);
+      if (res.resultCode === 0) {
         dispatch(unfollowAC(userId));
       }
-    });
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

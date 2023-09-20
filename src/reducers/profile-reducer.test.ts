@@ -2,8 +2,8 @@ import {
   ProfilePageType,
   addPostAC,
   profileReducer,
+  setStatusAC,
   setUserProfileAC,
-  updateNewPostTextAC,
 } from "./profile-reducer";
 
 let startState: ProfilePageType;
@@ -16,17 +16,15 @@ beforeEach(() => {
       { id: 3, message: "Blabla", likesCount: 11 },
       { id: 4, message: "Dada", likesCount: 11 },
     ],
-    newPostText: "",
     profile: null,
     status: "",
   };
 });
 
 test("correct new post should be added to the array posts| case ADD_POST", () => {
-  const action = addPostAC();
+  const action = addPostAC("hi");
   const endState = profileReducer(startState, action);
 
-  expect(endState.newPostText).toBe("");
   expect(endState.posts.length).toBe(5);
   expect(endState.posts[4].message).toBe("");
   expect(endState.posts[4].likesCount).toBe(0);
@@ -34,15 +32,6 @@ test("correct new post should be added to the array posts| case ADD_POST", () =>
   expect(endState.posts[5]).toBe(undefined);
   expect(endState.posts).not.toBe(startState.posts);
   expect(endState.posts[0].id).toBe(1);
-});
-
-test("correct new post message should be update to the newPostText | case UPDATE_NEW_POST_TEXT", () => {
-  const action = updateNewPostTextAC("yo");
-  const endState = profileReducer(startState, action);
-
-  expect(endState.newPostText).toBe("yo");
-  expect(endState.posts.length).toBe(startState.posts.length);
-  expect(endState.posts).toBe(startState.posts);
 });
 
 test("correct new profile user | case SET_USER_PROFILE", () => {
@@ -74,3 +63,10 @@ test("correct new profile user | case SET_USER_PROFILE", () => {
   expect(endState.profile).not.toBe(startState.profile);
 });
 
+test("correct status should be update | case SET_STATUS", () => {
+  const action = setStatusAC("Hello");
+  const endState = profileReducer(startState, action);
+
+  expect(endState.status).toBe("Hello");
+  expect(endState).not.toBe(startState);
+});
