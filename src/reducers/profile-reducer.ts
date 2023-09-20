@@ -4,6 +4,7 @@ import { AppThunkType } from "../redux/redux-store";
 const ADD_POST = "ADD_POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_STATUS = "SET_STATUS";
+const DELETE_POST = "DELETE_POST";
 
 export type PostDataType = {
   id: number;
@@ -66,6 +67,11 @@ export const profileReducer = (
       return { ...state, profile: action.profile };
     case SET_STATUS:
       return { ...state, status: action.status };
+    case DELETE_POST:
+      return {
+        ...state,
+        posts: state.posts.filter((p) => p.id === action.postId),
+      };
     default:
       return state;
   }
@@ -74,7 +80,8 @@ export const profileReducer = (
 export type ProfileActionTypes =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof setUserProfileAC>
-  | ReturnType<typeof setStatusAC>;
+  | ReturnType<typeof setStatusAC>
+  | ReturnType<typeof deletePostAC>;
 
 export const addPostAC = (newPostText: string) => {
   return {
@@ -94,6 +101,13 @@ export const setStatusAC = (status: string) => {
   return {
     type: SET_STATUS,
     status,
+  } as const;
+};
+
+export const deletePostAC = (postId: number) => {
+  return {
+    type: DELETE_POST,
+    postId,
   } as const;
 };
 

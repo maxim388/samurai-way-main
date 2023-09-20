@@ -14,27 +14,6 @@ type FormDataType = {
 };
 const maxLength10 = maxLengthCreator(10);
 
-// export class MyPost extends React.PureComponent<MyPostContainerPropsType> {
-//   render() {
-//     const addPost = (values: FormDataType) => {
-//     this.props.addPost(values.newPostText);
-//   };
-//     return (
-//       <div className={s.postBlock}>
-//         <h3>My Post</h3>
-//         <AddNewPostReduxForm onSubmit={addPost} />
-//         <div className={s.posts}>
-//           {this.props.posts.map((p) => {
-//             return (
-//               <Post key={p.id} message={p.message} likesCount={p.likesCount} />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
 export const MyPost: React.FC<MyPostContainerPropsType> = memo((props) => {
   const addPost = (values: FormDataType) => {
     props.addPost(values.newPostText);
