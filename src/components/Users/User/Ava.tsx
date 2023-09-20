@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
-import UserPhoto from "../../assets/users_default_img.jpg";
-import styles from "./Users.module.css";
+import UserPhoto from "../../../assets/users_default_img.jpg";
+import styles from "./User.module.css";
 import { UserType } from "../../../reducers/users-reducer";
 
 type AvaPropsType = {

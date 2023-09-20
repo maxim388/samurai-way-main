@@ -1,9 +1,7 @@
-import s from "./Users.module.css";
-import UserPhoto from "../../assets/users_default_img.jpg";
 import { FC } from "react";
 import { UserType } from "../../reducers/users-reducer";
-import { NavLink } from "react-router-dom";
 import { Paginator } from "./Paginator/Paginator";
+import { User } from "./User/User";
 
 type UsersPropsType = {
   pageSize: number;
@@ -24,50 +22,13 @@ export const Users: FC<UsersPropsType> = ({
   toggleFollowTC,
   totalUsersCount,
 }) => {
-
-  const usersMaping = users.map((u) => {
+  const userMaping = users.map((u) => {
     return (
-      <div key={u.id}>
-        <span>
-          <div>
-            <NavLink to={`/profile/${u.id}`}>
-              <img
-                alt="ava"
-                src={u.photos.small !== null ? u.photos.small : UserPhoto}
-                className={s.ava}
-              />
-            </NavLink>
-          </div>
-          <div>
-            {u.followed ? (
-              <button
-                disabled={followingInProgress}
-                onClick={() => {
-                  toggleFollowTC(u.id, false);
-                }}
-              >
-                Unfollow
-              </button>
-            ) : (
-              <button
-                disabled={followingInProgress}
-                onClick={() => {
-                  toggleFollowTC(u.id, true);
-                }}
-              >
-                Follow
-              </button>
-            )}
-          </div>
-        </span>
-        <span>
-          <span>
-            <div>{u.name}</div>
-            <div>{u.status}</div>
-          </span>
-          <span></span>
-        </span>
-      </div>
+      <User
+        user={u}
+        followingInProgress={followingInProgress}
+        toggleFollowTC={toggleFollowTC}
+      />
     );
   });
 
@@ -79,7 +40,7 @@ export const Users: FC<UsersPropsType> = ({
         totalUsersCount={totalUsersCount}
         pageSize={pageSize}
       />
-      <div>{usersMaping}</div>
+      {userMaping}
     </div>
   );
 };

@@ -1,6 +1,8 @@
+//MyButton disable button api request
 //added useMemo
 //added useCallback
 //added React.memo
 //page LOGIN when I'm again login in to social network, need to update page from url
 //search codeword "fix"
 //case DELETE_POST
+//TOGGLE_IS_FOLLOWING_PROGRESS - fix test

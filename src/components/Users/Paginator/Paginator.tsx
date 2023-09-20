@@ -1,7 +1,6 @@
 import { FC } from "react";
 import styles from "./Paginator.module.css";
 
-
 type PaginatorPropsTyps = {
   totalUsersCount: number;
   currentPage: number;
@@ -25,7 +24,7 @@ export const Paginator: FC<PaginatorPropsTyps> = ({
     return (
       <span
         key={p}
-        className={currentPage === p ? styles.selectedPage : ""}
+        className={currentPage === p ? styles.selectedPage : ""} //fix
         onClick={() => onPageChanged(p)}
       >
         {p}

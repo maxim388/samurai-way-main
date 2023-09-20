@@ -33,7 +33,7 @@ export type UsersPageType = {
 
 let initialState = {
   users: [],
-  pageSize: 5,
+  pageSize: 2,
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
@@ -160,7 +160,7 @@ export const toggleFollowTC = (
   follow: boolean
 ): AppThunkType => {
   return async (dispatch) => {
-    dispatch(toggleIsFetchingAC(true));
+    dispatch(toggleFollowingProgressAC(true));
     let res;
     try {
       if (follow) {
@@ -174,7 +174,7 @@ export const toggleFollowTC = (
     } catch (e) {
       console.log(e);
     } finally {
-      dispatch(toggleIsFetchingAC(false));
+      dispatch(toggleFollowingProgressAC(false));
     }
   };
 };

@@ -6,7 +6,6 @@ import {
   setUsersAC,
   toggleFollowingProgressAC,
   toggleIsFetchingAC,
-  // unfollowAC,
   usersReducer,
 } from "./users-reducer";
 

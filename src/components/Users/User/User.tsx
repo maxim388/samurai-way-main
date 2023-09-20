@@ -1,70 +1,40 @@
-
-
 import { FC } from "react";
 import { UserType } from "../../../reducers/users-reducer";
 import { Ava } from "./Ava";
+import { MyButton } from "./MyButton";
 
 type UserPropsType = {
-  users: UserType[];
+  user: UserType;
   followingInProgress: boolean;
   toggleFollowTC: (userId: number, follow: boolean) => Function;
 };
 
-export const Users: FC<UserPropsType> = ({
-  users,
+export const User: FC<UserPropsType> = ({
+  user,
   followingInProgress,
   toggleFollowTC,
 }) => {
-  const usersMaping = users.map((u) => {
-    return (
-      <div key={u.id}>
-        <span>
-          <Ava user={u}/>
-          {/* <div>
-            <NavLink to={`/profile/${u.id}`}>
-              <img
-                alt="ava"
-                src={u.photos.small !== null ? u.photos.small : UserPhoto}
-                className={s.ava}
-              />
-            </NavLink>
-          </div> */}
-          <div>
-            {u.followed ? (
-              <button
-                disabled={followingInProgress}
-                onClick={() => {
-                  toggleFollowTC(u.id, false);
-                }}
-              >
-                Unfollow
-              </button>
-            ) : (
-              <button
-                disabled={followingInProgress}
-                onClick={() => {
-                  toggleFollowTC(u.id, true);
-                }}
-              >
-                Follow
-              </button>
-            )}
-          </div>
-        </span>
-        <span>
-          <span>
-            <div>{u.name}</div>
-            <div>{u.status}</div>
-          </span>
-          <span></span>
-        </span>
-      </div>
-    );
-  });
-
   return (
-    <div>
-      <div>{usersMaping}</div>
+    <div key={user.id}>
+      <span>
+        <Ava user={user} />
+        <div>
+          <MyButton
+            followed={user.followed}
+            userId={user.id}
+            toggleFollowTC={toggleFollowTC}
+            followingInProgress={followingInProgress}
+          >
+            {user.followed ? "Unfollow" : "Follow"}
+          </MyButton>
+        </div>
+      </span>
+      <span>
+        <span>
+          <div>{user.name}</div>
+          <div>{user.status}</div>
+        </span>
+      </span>
     </div>
   );
 };
