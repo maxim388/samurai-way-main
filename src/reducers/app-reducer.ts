@@ -21,7 +21,6 @@ export const appReducer = (
         ...state,
         initialized: true,
       };
-
     default:
       return state;
   }
