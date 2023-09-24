@@ -1,87 +1,46 @@
-import s from "./Users.module.css";
-import UserPhoto from "../../assets/users_default_img.jpg";
-import React from "react";
+import { FC } from "react";
 import { UserType } from "../../reducers/users-reducer";
-import { NavLink } from "react-router-dom";
+import { Paginator } from "./Paginator/Paginator";
+import { User } from "./User/User";
 
-type UserPropsType = {
-  pages: number[];
+type UsersPropsType = {
+  pageSize: number;
   users: UserType[];
   currentPage: number;
   followingInProgress: boolean;
+  totalUsersCount: number;
   onPageChanged: (pageNumber: number) => void;
-  unfollowTC: (userId: number) => Function;
-  followTC: (userId: number) => Function;
+  toggleFollowTC: (userId: number, follow: boolean) => Function;
 };
 
-export const Users: React.FC<UserPropsType> = ({
-  pages,
+export const Users: FC<UsersPropsType> = ({
+  pageSize,
   users,
   currentPage,
   onPageChanged,
   followingInProgress,
-  unfollowTC,
-  followTC,
+  toggleFollowTC,
+  totalUsersCount,
 }) => {
+  const userMaping = users.map((u) => {
+    return (
+      <User
+        user={u}
+        followingInProgress={followingInProgress}
+        toggleFollowTC={toggleFollowTC}
+      />
+    );
+  });
+
   return (
     <div>
-      <div>
-        {pages.map((p) => {
-          return (
-            <span
-              className={currentPage === p ? s.selectedPage : ""}
-              onClick={() => onPageChanged(p)}
-            >
-              {p}
-            </span>
-          );
-        })}
-      </div>
-      {users.map((u) => {
-        return (
-          <div key={u.id}>
-            <span>
-              <div>
-                <NavLink to={`/profile/${u.id}`}>
-                  <img
-                    alt="ava"
-                    src={u.photos.small !== null ? u.photos.small : UserPhoto}
-                    className={s.ava}
-                  />
-                </NavLink>
-              </div>
-              <div>
-                {u.followed ? (
-                  <button
-                    disabled={followingInProgress}
-                    onClick={() => {
-                      unfollowTC(u.id);
-                    }}
-                  >
-                    Unfollow
-                  </button>
-                ) : (
-                  <button
-                    disabled={followingInProgress}
-                    onClick={() => {
-                      followTC(u.id);
-                    }}
-                  >
-                    Follow
-                  </button>
-                )}
-              </div>
-            </span>
-            <span>
-              <span>
-                <div>{u.name}</div>
-                <div>{u.status}</div>
-              </span>
-              <span></span>
-            </span>
-          </div>
-        );
-      })}
+      <Paginator
+        onPageChanged={onPageChanged}
+        currentPage={currentPage}
+        totalUsersCount={totalUsersCount}
+        pageSize={pageSize}
+      />
+      {userMaping}
     </div>
   );
 };

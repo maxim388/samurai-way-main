@@ -34,9 +34,7 @@ type ProfileAPIType = {
   getStatus: (userId: number) => Promise<AxiosResponse>;
   updateStatus: (status: string) => Promise<AxiosResponse>;
 };
-type ResponseAuthType = {
-
-}
+type ResponseAuthType = {};
 
 type AuthAPIType = {
   authMe: () => Promise<any>;
@@ -50,6 +48,8 @@ export const usersAPI: UsersAPIType = {
     return instance
       .get(`users?page=${page}&count=${count}`)
       .then<ResponseUsersType>((res) => res.data);
+    // const res = await instance.get(`users?page=${page}&count=${count}`);
+    // return res.data;
   },
   followUser(userId: number) {
     return instance

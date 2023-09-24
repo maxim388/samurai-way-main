@@ -2,8 +2,8 @@ import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/api";
 import { AppThunkType } from "../redux/redux-store";
 
-const SET_USER_DATA = "SET_USER_DATA";
-const SET_CAPTCHA = "SET_CAPTCHA";
+const SET_USER_DATA = "auth/SET_USER_DATA";
+const SET_CAPTCHA = "auth/SET_CAPTCHA";
 
 export type AuthType = {
   id: number | null;
@@ -72,9 +72,11 @@ export const authUserTC = (): AppThunkType => {
       if (!res.data.resultCode) {
         const { id, email, login } = res.data.data;
         dispatch(setAuthUserDataAC(id, email, login, true));
+        return true;
       }
     } catch (e) {
       console.log(e);
+      return false;
     }
   };
 };

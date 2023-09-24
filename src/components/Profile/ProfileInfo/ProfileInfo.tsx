@@ -3,6 +3,7 @@ import { Preloader } from "../../common/Preloader";
 import s from "./ProfileInfo.module.css";
 import { ProfileStatus } from "./ProfileStatus";
 import { ProfileStatusWithHooks } from "./ProfileStatusWithHooks";
+import { FC } from "react";
 
 type ProfileInfoPropsType = {
   profile: null | UserProfileType;
@@ -10,7 +11,7 @@ type ProfileInfoPropsType = {
   updateStatusTC: (status: string) => Function;
 };
 
-export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({
+export const ProfileInfo: FC<ProfileInfoPropsType> = ({
   profile,
   status,
   updateStatusTC,
