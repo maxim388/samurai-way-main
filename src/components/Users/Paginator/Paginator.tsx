@@ -1,21 +1,24 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./Paginator.module.css";
 
 type PaginatorPropsTyps = {
-  totalUsersCount: number;
+  totalItemsCount: number;
   currentPage: number;
   pageSize: number;
   onPageChanged: (page: number) => void;
 };
 
 export const Paginator: FC<PaginatorPropsTyps> = ({
-  totalUsersCount,
+  totalItemsCount,
+  currentPage,
   pageSize,
   onPageChanged,
-  currentPage,
 }) => {
   let pages = [];
-  let pagesCount = Math.ceil(totalUsersCount / pageSize);
+  let pagesCount = Math.ceil(totalItemsCount / pageSize);
+  // const [portionNumber, setPortionNumber] = useState<number>(1);
+  // let leftPortionPageNumber = (portionNumber - 1) * pageSize + 1;
+  // let rightPortionPageNumber = portionNumber * pageSize;
 
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i);
@@ -31,5 +34,32 @@ export const Paginator: FC<PaginatorPropsTyps> = ({
       </span>
     );
   });
-  return <div>{pagesMaping}</div>;
+  debugger;
+  return (
+    <div>
+      {/* todo */}
+      {currentPage > 1 && (
+        <button
+          onClick={() => {
+            // setPortionNumber(portionNumber - 1);
+            onPageChanged(currentPage - 1);
+          }}
+        >
+          PREV
+        </button>
+      )}
+      {pagesMaping}
+      {/* todo */}
+      {pagesCount > currentPage && (
+        <button
+          onClick={() => {
+            // setPortionNumber(portionNumber + 1);
+            onPageChanged(currentPage + 1);
+          }}
+        >
+          NEXT
+        </button>
+      )}
+    </div>
+  );
 };
