@@ -1,16 +1,20 @@
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Route } from "react-router-dom";
-import { DialogsContainer } from "./components/Dialogs/DialogsContainer";
+// import { DialogsContainer } from "./components/Dialogs/DialogsContainer";
 import { UsersContainer } from "./components/Users/UsersContainer";
-import { ProfileContainer } from "./components/Profile/ProfileContainer";
+// import { ProfileContainer } from "./components/Profile/ProfileContainer";
 import { HeaderContainer } from "./components/Header/HeaderContainer";
 import { LoginContainer } from "./components/Login/Login";
-import { Component } from "react";
+import { Component, Suspense, lazy } from "react";
 import { connect } from "react-redux";
 import { initializedSuccessTC } from "./reducers/app-reducer";
 import { AppRootStateType } from "./redux/redux-store";
 import { Preloader } from "./components/common/Preloader";
+import { withSuspence } from "./HOC/withSuspence";
+
+const DialogsContainer = lazy(() => import("./components/Dialogs/DialogsContainer"));
+const ProfileContainer = lazy(() => import("./components/Profile/ProfileContainer"));
 
 type MapStateToPropsType = {
   initialized: boolean;
@@ -46,9 +50,12 @@ export class AppContainer extends Component<AppContainerType> {
           <div className={"app-wrapper-content"}>
             <Route
               path={"/profile/:userId?"}
-              render={() => <ProfileContainer />}
+              render={withSuspence(ProfileContainer)}            
             />
-            <Route path={"/dialogs"} render={() => <DialogsContainer />} />
+            <Route
+              path={"/dialogs"}
+              render={withSuspence(DialogsContainer)}
+            />
             <Route path={"/users"} render={() => <UsersContainer />} />
             <Route path={"/login"} render={() => <LoginContainer />} />
           </div>

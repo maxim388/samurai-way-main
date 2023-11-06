@@ -79,8 +79,10 @@ const mapDispatchToProps: MapDispatchToPropsType = {
   updateStatusTC: updateStatusTC,
 };
 
-export const ProfileContainer = compose<React.ComponentType>(
+const ProfileContainer = compose<React.ComponentType>(
   connect(mapStateToProps, mapDispatchToProps),
   withRouter,
   withAuthRedirect
 )(ProfileAPIContainer);
+
+export default ProfileContainer;

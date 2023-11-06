@@ -34,7 +34,6 @@ export const Paginator: FC<PaginatorPropsTyps> = ({
       </span>
     );
   });
-  debugger;
   return (
     <div>
       {/* todo */}
