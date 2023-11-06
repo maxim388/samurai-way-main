@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import {
   ProfileActionTypes,
   profileReducer,
@@ -21,8 +21,11 @@ const rootReducer = combineReducers({
   app: appReducer,
   form: formReduser,
 });
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+// export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export type StoreType = typeof store;
 export type AppRootStateType = ReturnType<typeof store.getState>;
@@ -46,5 +49,5 @@ export type AppThunkType<ReturnType = void> = ThunkAction<
   unknown,
   AppActionsType
 >;
-// @ts-ignore
-window.store = store;
+// // @ts-ignore
+// window.store = store;
