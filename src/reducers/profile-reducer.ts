@@ -1,20 +1,27 @@
+import { stopSubmit } from "redux-form";
 import { profileAPI } from "../api/api";
+import { ProfileFormDataType } from "../components/Profile/ProfileInfo/ProfileInfo";
 import { AppThunkType } from "../redux/redux-store";
 
 const ADD_POST = "profile/ADD_POST";
 const SET_USER_PROFILE = "profile/SET_USER_PROFILE";
 const SET_STATUS = "profile/SET_STATUS";
 const DELETE_POST = "profile/DELETE_POST";
+const SAVE_PHOTO_SUCCESS = "profile/SAVE_PHOTO_SUCCESS";
 
 export type PostDataType = {
   id: number;
   message: string;
   likesCount: number;
 };
+type PhotosType = {
+  small: string;
+  large: string;
+};
 
 export type UserProfileType = {
-  aboutMe: string;
-  contacts: {
+  aboutMe?: string;
+  contacts?: {
     facebook: string;
     website: null;
     vk: string;
@@ -24,14 +31,11 @@ export type UserProfileType = {
     github: string;
     mainLink: null;
   };
-  lookingForAJob: boolean;
-  lookingForAJobDescription: string;
-  fullName: string;
-  userId: number;
-  photos: {
-    small: string;
-    large: string;
-  };
+  lookingForAJob?: boolean;
+  lookingForAJobDescription?: string;
+  fullName?: string;
+  userId?: number;
+  photos?: PhotosType;
 };
 
 export type ProfilePageType = {
@@ -72,6 +76,11 @@ export const profileReducer = (
         ...state,
         posts: state.posts.filter((p) => p.id === action.postId),
       };
+    case SAVE_PHOTO_SUCCESS:
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      };
     default:
       return state;
   }
@@ -81,7 +90,8 @@ export type ProfileActionTypes =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof setUserProfileAC>
   | ReturnType<typeof setStatusAC>
-  | ReturnType<typeof deletePostAC>;
+  | ReturnType<typeof deletePostAC>
+  | ReturnType<typeof savePhotoAC>;
 
 export const addPostAC = (newPostText: string) => {
   return {
@@ -111,13 +121,20 @@ export const deletePostAC = (postId: number) => {
   } as const;
 };
 
+export const savePhotoAC = (photos: PhotosType) => {
+  return {
+    type: SAVE_PHOTO_SUCCESS,
+    photos,
+  } as const;
+};
+
 export const getUserProfileTC = (userId: number): AppThunkType => {
   return async (dispatch) => {
     try {
       const res = await profileAPI.getProfile(userId);
       dispatch(setUserProfileAC(res));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 };
@@ -130,7 +147,7 @@ export const getStatusTC = (userId: number): AppThunkType => {
         dispatch(setStatusAC(res.data));
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 };
@@ -141,7 +158,40 @@ export const updateStatusTC = (status: string): AppThunkType => {
       await profileAPI.updateStatus(status);
       dispatch(setStatusAC(status));
     } catch (e) {
-      console.log(e);
+      console.error(e);
+    }
+  };
+};
+
+export const savePhotoTC = (file: File): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await profileAPI.savePhoto(file);
+      if (res.data.resultCode === 0) {
+        dispatch(savePhotoAC(res.data));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+};
+
+export const saveProfileTC = (profile: ProfileFormDataType): AppThunkType => {
+  return async (dispatch, getState) => {
+    try {
+      const userId = getState().auth.id
+      const res = await profileAPI.saveProfile(profile);
+      if (res.data.resultCode === 0) {
+        dispatch(getUserProfileTC(userId!));
+      } else {
+        const messageError = res.data.messages.length ? res.data.messages[0] : "Some Error";
+        dispatch(stopSubmit("edit-profile", { _error: messageError }));
+        //todo
+        // dispatch(stopSubmit("edit-profile", { contacts: { facebook: messageError } }));
+        // return Promise.reject(messageError);
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 };
