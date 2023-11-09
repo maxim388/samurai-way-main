@@ -36,11 +36,9 @@ export const Paginator: FC<PaginatorPropsTyps> = ({
   });
   return (
     <div>
-      {/* todo */}
       {currentPage > 1 && (
         <button
           onClick={() => {
-            // setPortionNumber(portionNumber - 1);
             onPageChanged(currentPage - 1);
           }}
         >
@@ -48,11 +46,9 @@ export const Paginator: FC<PaginatorPropsTyps> = ({
         </button>
       )}
       {pagesMaping}
-      {/* todo */}
       {pagesCount > currentPage && (
         <button
           onClick={() => {
-            // setPortionNumber(portionNumber + 1);
             onPageChanged(currentPage + 1);
           }}
         >
