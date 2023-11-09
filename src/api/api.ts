@@ -36,11 +36,14 @@ type ProfileAPIType = {
   savePhoto: (file: File) => Promise<AxiosResponse>;
   saveProfile: (profile: any) => Promise<AxiosResponse>;
 };
-type ResponseAuthType = {};
-
 type AuthAPIType = {
   authMe: () => Promise<any>;
-  login: (email: string, password: string, rememberMe: boolean) => Promise<any>;
+  login: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: string | null
+  ) => Promise<any>;
   logout: () => Promise<any>;
   getCaptcha: () => Promise<any>;
 };
@@ -89,8 +92,8 @@ export const authAPI: AuthAPIType = {
   authMe() {
     return instance.get(`auth/me`);
   },
-  login(email: string, password: string, rememberMe: boolean = false) {
-    return instance.post(`auth/login`, { email, password, rememberMe });
+  login(email: string, password: string, rememberMe: boolean = false, captcha = null) {
+    return instance.post(`auth/login`, { email, password, rememberMe, captcha });
   },
   logout() {
     return instance.delete(`auth/login`);
