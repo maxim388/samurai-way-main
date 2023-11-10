@@ -19,7 +19,6 @@ const initialState: AuthType = {
   email: null,
   isAuth: false,
   captcha: "",
-  // "https://social-network.samuraijs.com/HelpApp/HelpApp/Captcha?w=200\u0026h=100\u0026c=%2B1cvPhDyyoOu7fuCIyY%2B5A%3D%3D",
 };
 
 export const authReducer = (
@@ -84,11 +83,12 @@ export const authUserTC = (): AppThunkType => {
 export const loginTC = (
   email: string,
   password: string,
-  rememberMe: boolean
+  rememberMe: boolean,
+  captcha: string | null
 ): AppThunkType => {
   return async (dispatch) => {
     try {
-      const res = await authAPI.login(email, password, rememberMe);
+      const res = await authAPI.login(email, password, rememberMe, captcha);
       switch (res.data.resultCode) {
         case 0:
           dispatch(authUserTC());
@@ -125,7 +125,7 @@ export const captchaTC = (): AppThunkType => {
   return async (dispatch) => {
     try {
       const res = await authAPI.getCaptcha();
-      dispatch(setCaptchaAC(res.url));
+      dispatch(setCaptchaAC(res.data.url));
     } catch (e) {
       console.log(e);
     }

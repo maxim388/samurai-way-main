@@ -1,8 +1,9 @@
 import { FC, useState, useEffect, ChangeEvent } from "react";
+import { AppThunkType } from "../../../redux/redux-store";
 
 type ProfileStatusType = {
   status: string;
-  updateStatusTC: (status: string) => Function;
+  updateStatusTC: (status: string) => AppThunkType;
 };
 
 export const ProfileStatusWithHooks: FC<ProfileStatusType> = (props) => {
@@ -13,7 +14,6 @@ export const ProfileStatusWithHooks: FC<ProfileStatusType> = (props) => {
   };
   useEffect(() => {
     setStatus(props.status);
-    return () => {};
   }, [props.status]);
 
   const activateEditMode = () => {
@@ -36,7 +36,7 @@ export const ProfileStatusWithHooks: FC<ProfileStatusType> = (props) => {
         </div>
       ) : (
         <div>
-          <span onDoubleClick={activateEditMode}>{status || "------"}</span>
+          <b>Status: </b><span onDoubleClick={activateEditMode}>{status || "------"}</span>
         </div>
       )}
     </div>

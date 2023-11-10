@@ -33,12 +33,17 @@ type ProfileAPIType = {
   getProfile: (userId: number) => Promise<UserProfileType>;
   getStatus: (userId: number) => Promise<AxiosResponse>;
   updateStatus: (status: string) => Promise<AxiosResponse>;
+  savePhoto: (file: File) => Promise<AxiosResponse>;
+  saveProfile: (profile: any) => Promise<AxiosResponse>;
 };
-type ResponseAuthType = {};
-
 type AuthAPIType = {
   authMe: () => Promise<any>;
-  login: (email: string, password: string, rememberMe: boolean) => Promise<any>;
+  login: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: string | null
+  ) => Promise<any>;
   logout: () => Promise<any>;
   getCaptcha: () => Promise<any>;
 };
@@ -52,22 +57,16 @@ export const usersAPI: UsersAPIType = {
     // return res.data;
   },
   followUser(userId: number) {
-    return instance
-      .post(`follow/${userId}`)
-      .then<ResponseFollowType>((res) => res.data);
+    return instance.post(`follow/${userId}`).then<ResponseFollowType>((res) => res.data);
   },
   unfollowUser(userId: number) {
-    return instance
-      .delete(`follow/${userId}`)
-      .then<ResponseFollowType>((res) => res.data);
+    return instance.delete(`follow/${userId}`).then<ResponseFollowType>((res) => res.data);
   },
 };
 
 export const profileAPI: ProfileAPIType = {
   getProfile(userId: number) {
-    return instance
-      .get(`profile/${userId}`)
-      .then<ResponseProfileType>((res) => res.data);
+    return instance.get(`profile/${userId}`).then<ResponseProfileType>((res) => res.data);
   },
   getStatus(userId: number) {
     return instance.get<AxiosResponse>(`profile/status/${userId}`);
@@ -75,14 +74,26 @@ export const profileAPI: ProfileAPIType = {
   updateStatus(status: string) {
     return instance.put<AxiosResponse>(`profile/status`, { status: status });
   },
+  savePhoto(photoFile: File) {
+    const formData = new FormData();
+    formData.append("image", photoFile);
+    return instance.put<AxiosResponse>(`profile/photo`, formData, {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
+  },
+  saveProfile(profile: any) {
+    return instance.put<AxiosResponse>(`profile`, profile);
+  },
 };
 
 export const authAPI: AuthAPIType = {
   authMe() {
     return instance.get(`auth/me`);
   },
-  login(email: string, password: string, rememberMe: boolean = false) {
-    return instance.post(`auth/login`, { email, password, rememberMe });
+  login(email: string, password: string, rememberMe: boolean = false, captcha = null) {
+    return instance.post(`auth/login`, { email, password, rememberMe, captcha });
   },
   logout() {
     return instance.delete(`auth/login`);
